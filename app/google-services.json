@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "853638380579",
+    "firebase_url": "https://system-obslugi-kina.firebaseio.com",
+    "project_id": "system-obslugi-kina",
+    "storage_bucket": "system-obslugi-kina.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853638380579:android:12c9ffdae4f67977",
+        "android_client_info": {
+          "package_name": "com.wat.jannowakowski.systemobslugikina"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853638380579-is8itngifr1kvktkjfqvni4rdannmvsp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhk6vYLbh62YO0wZ0pOUFspIYYh5FFupQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
