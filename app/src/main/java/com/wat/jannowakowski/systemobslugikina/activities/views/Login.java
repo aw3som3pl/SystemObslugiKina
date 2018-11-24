@@ -1,7 +1,8 @@
-package com.wat.jannowakowski.systemobslugikina.activities;
+package com.wat.jannowakowski.systemobslugikina.activities.views;
 
-import com.wat.jannowakowski.systemobslugikina.objects.User;
-import com.wat.jannowakowski.systemobslugikina.serviceListeners.InternetConnectionListener;
+import com.wat.jannowakowski.systemobslugikina.abstractClasses.PopupUtilities;
+import com.wat.jannowakowski.systemobslugikina.activities.models.User;
+import com.wat.jannowakowski.systemobslugikina.global.InternetConnectionListener;
 import com.wat.jannowakowski.systemobslugikina.interfaces.*;
 
 import android.content.Context;
@@ -89,11 +90,11 @@ public class Login extends AppCompatActivity {
                 }
                 if(val == 1) {
                     versionErrorFlagState = true;
-                    show_message_popup("Proszę pobrać nową wersję aplikacji", "Kliknij w przycisk AKTUALIZUJ by pobrać najnowszą wersję ze sklepu PLAY", true);
+                    show_message_popup(getString(R.string.notice_new_version_available), getString(R.string.notice_new_version_available_description), true);
                 }
                 if(val == 2) {
                     maintenanceFlagState = true;
-                    show_message_popup("Proszę pobrać nową wersję aplikacji",maintenanceMessage,false);
+                    show_message_popup(getString(R.string.notice_maintenance),maintenanceMessage,false);
                 }
             }
         });
@@ -110,12 +111,12 @@ public class Login extends AppCompatActivity {
                         manualLoginEnabled = false;
 
                         if (TextUtils.isEmpty(email)) {
-                            Toast.makeText(getApplicationContext(),"Wprowadź adres email", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.notice_enter_email, Toast.LENGTH_SHORT).show();
                             return;
                         }
 
                         if (TextUtils.isEmpty(password)) {
-                            Toast.makeText(getApplicationContext(), getString(R.string.prompt_password), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.notice_enter_password), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -133,9 +134,9 @@ public class Login extends AppCompatActivity {
                                         if (!task.isSuccessful()) {
                                             // there was an error
                                             if (password.length() < 6) {
-                                                inputPassword.setError("Hasło musi składać się z minium 6 znaków!");
+                                                inputPassword.setError(getString(R.string.error_short_password));
                                             } else {
-                                                Toast.makeText(Login.this, "Błędna kombinacja Loginu i Hasła!", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(Login.this, R.string.error_invalid_credentials, Toast.LENGTH_LONG).show();
                                             }
                                             manualLoginEnabled = true;
                                         } else {
@@ -161,16 +162,16 @@ public class Login extends AppCompatActivity {
                                     }
                                 });
                     } else {
-                        Toast.makeText(v.getContext(), "Utracono połączenie z internetem", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), R.string.error_no_internet_connection, Toast.LENGTH_SHORT).show();
                     }
                 }else
                 if(versionErrorFlagState){
                     manualLoginEnabled = false;
-                    show_message_popup("Proszę pobrać nową wersję aplikacji","Kliknij w przycisk AKTUALIZUJ by pobrać najnowszą wersję ze sklepu PLAY",true);
+                    show_message_popup(getString(R.string.notice_new_version_available),getString(R.string.notice_new_version_available_description),true);
                 }else
                 if(maintenanceFlagState) {
                     manualLoginEnabled = false;
-                    show_message_popup("Trwają prace konserwacyjne", maintenanceMessage, false);
+                    show_message_popup(getString(R.string.notice_maintenance), maintenanceMessage, false);
                 }
             }
         });
@@ -252,14 +253,14 @@ public class Login extends AppCompatActivity {
         else {
             if(versionErrorFlagState){
                 manualLoginEnabled = false;
-                show_message_popup("Proszę pobrać nową wersję aplikacji","Kliknij w przycisk AKTUALIZUJ by pobrać najnowszą wersję ze sklepu PLAY",true);
+                show_message_popup(getString(R.string.notice_new_version_available),getString(R.string.notice_new_version_available_description),true);
             }else
             if(maintenanceFlagState) {
                 manualLoginEnabled = false;
-                show_message_popup("Trwają prace konserwacyjne", maintenanceMessage, false);
+                show_message_popup(getString(R.string.notice_maintenance), maintenanceMessage, false);
             }else {
                 manualLoginEnabled = true;
-                Toast.makeText(this.getBaseContext(), "Automatyczne logowanie zostało wyłączone", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getBaseContext(), R.string.notice_autologin_disabled, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -288,7 +289,7 @@ public class Login extends AppCompatActivity {
         messageDescription.setText(description);
 
         popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
-        dimBehind(popupWindow);
+        PopupUtilities.dimBehind(popupWindow);
 
         if(updateActive){
             updateButton.setVisibility(View.VISIBLE);
@@ -307,15 +308,6 @@ public class Login extends AppCompatActivity {
                 finishAndRemoveTask();
             }
         });
-    }
-    public static void dimBehind(PopupWindow popupWindow) {
-        View container = popupWindow.getContentView().getRootView();
-        Context context = popupWindow.getContentView().getContext();
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
-        p.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        p.dimAmount = 0.7f;
-        wm.updateViewLayout(container, p);
     }
 
     private void updateButtonAction(){

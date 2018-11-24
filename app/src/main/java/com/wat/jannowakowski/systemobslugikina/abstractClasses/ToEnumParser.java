@@ -1,4 +1,4 @@
-package com.wat.jannowakowski.systemobslugikina.dataParsers;
+package com.wat.jannowakowski.systemobslugikina.abstractClasses;
 
 /**
  * Created by Jan Nowakowski on 24.11.2018.

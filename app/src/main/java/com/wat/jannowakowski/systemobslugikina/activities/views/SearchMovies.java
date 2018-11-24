@@ -1,4 +1,4 @@
-package com.wat.jannowakowski.systemobslugikina.activities;
+package com.wat.jannowakowski.systemobslugikina.activities.views;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

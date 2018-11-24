@@ -1,4 +1,4 @@
-package com.wat.jannowakowski.systemobslugikina.serviceListeners;
+package com.wat.jannowakowski.systemobslugikina.global;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,7 +8,7 @@ import android.net.NetworkInfo;
  * Created by Jan Nowakowski on 14.05.2018.
  */
 
-public class InternetConnectionListener {
+public class InternetConnectionListener{
 
         private final Context _context;
 

@@ -3,7 +3,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
+    <string name="notice_enter_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -17,4 +17,12 @@
     <string name="title_activity_main">Main</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_customer_menu">CustomerMenu</string>
+    <string name="error_short_password">Hasło musi składać się z minium 6 znaków!</string>
+    <string name="error_invalid_credentials">Błędna kombinacja Loginu i Hasła!</string>
+    <string name="error_no_internet_connection">Utracono połączenie z internetem</string>
+    <string name="notice_new_version_available">Proszę pobrać nową wersję aplikacji</string>
+    <string name="notice_new_version_available_description">Kliknij w przycisk AKTUALIZUJ by pobrać najnowszą wersję ze sklepu PLAY</string>
+    <string name="notice_maintenance">Trwają prace konserwacyjne</string>
+    <string name="notice_enter_email">Wprowadź adres email</string>
+    <string name="notice_autologin_disabled">Automatyczne logowanie zostało wyłączone</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.wat.jannowakowski.systemobslugikina.objects;
+package com.wat.jannowakowski.systemobslugikina.activities.models;
 import com.wat.jannowakowski.systemobslugikina.interfaces.*;
 
 import android.support.annotation.NonNull;
