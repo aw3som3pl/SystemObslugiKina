@@ -25,4 +25,5 @@
     <string name="notice_maintenance">Trwają prace konserwacyjne</string>
     <string name="notice_enter_email">Wprowadź adres email</string>
     <string name="notice_autologin_disabled">Automatyczne logowanie zostało wyłączone</string>
+    <string name="notice_mainetnance_desctiption">Przepraszamy i prosimy o cierpliwość, działanie systemu zostanie przywrócone najszybciej jak to możliwe!</string>
 </resources>

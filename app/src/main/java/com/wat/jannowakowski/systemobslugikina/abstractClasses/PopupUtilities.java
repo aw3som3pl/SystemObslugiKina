@@ -1,6 +1,8 @@
 package com.wat.jannowakowski.systemobslugikina.abstractClasses;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +14,26 @@ import android.widget.TextView;
 
 import com.wat.jannowakowski.systemobslugikina.R;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-/**
- * Created by Jan Nowakowski on 24.11.2018.
- */
 
 public abstract class PopupUtilities {
 
-    public static void show_message_popup(View anchor, LayoutInflater inflater, String title, String description, boolean updateActive){
+    public static void showMessagePopup(final Context context, View anchor, LayoutInflater inflater, int actionCode){
 
-        // inflate the layout of the popup window
+        String title = "";
+        String description = "";
+        boolean updateActive = false;
+/*
+        if(actionCode == presenter.maintenance){
+
+        }else
+        if(actionCode == presenter.updateRequired){
+
+        }else
+        if(actionCode == presenter.versionUpToDate){
+
+        }*/
+
 
         final View popupView = inflater.inflate(R.layout.message_popup, null);
 
@@ -49,7 +60,7 @@ public abstract class PopupUtilities {
             updateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    updateButtonAction(context);
                 }
             });
         }
@@ -60,6 +71,16 @@ public abstract class PopupUtilities {
                 popupWindow.dismiss();
             }
         });
+    }
+
+
+    private static void updateButtonAction(Context context){
+        final String appPackageName = context.getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     public static void dimBehind(PopupWindow popupWindow) {

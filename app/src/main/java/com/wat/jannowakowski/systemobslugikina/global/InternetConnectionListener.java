@@ -1,5 +1,6 @@
 package com.wat.jannowakowski.systemobslugikina.global;
 
+import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,17 +11,26 @@ import android.net.NetworkInfo;
 
 public class InternetConnectionListener{
 
-        private final Context _context;
+    private static Context appContext;
 
-        public InternetConnectionListener(Context context){
-            this._context = context;
+    private static InternetConnectionListener INSTANCE = null;
+
+    private InternetConnectionListener(){}
+
+
+    public static InternetConnectionListener getINSTANCE(){
+        if(INSTANCE == null){
+            INSTANCE = new InternetConnectionListener();
         }
+        return(INSTANCE);
+    }
 
-        /**
-         * Checking for all possible internet providers
-         * **/
-        public boolean isConnectingToInternet(){
-            ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static void setContext(Context context) {
+        appContext = context;
+    }
+
+    public boolean isConnectedToInternet(){
+            ConnectivityManager connectivity = (ConnectivityManager) appContext.getSystemService(Context.CONNECTIVITY_SERVICE);
             if (connectivity != null)
             {
                 NetworkInfo[] info = connectivity.getAllNetworkInfo();
@@ -30,7 +40,6 @@ public class InternetConnectionListener{
                         {
                             return true;
                         }
-
             }
             return false;
         }

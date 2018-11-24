@@ -1,4 +1,5 @@
 package com.wat.jannowakowski.systemobslugikina.activities.models;
+import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 import com.wat.jannowakowski.systemobslugikina.interfaces.*;
 
 import android.support.annotation.NonNull;
@@ -128,7 +129,10 @@ public class User {
                                     }
                                 }
                             }
-                            userDataReadyListener.onUserDataReloaded(0);
+                            if(role== CurrentAppSession.getCustomerLoginAttemptCode())
+                            userDataReadyListener.onUserDataReloaded(CurrentAppSession.getCustomerLoginAttemptCode());
+                            else
+                                userDataReadyListener.onUserDataReloaded(CurrentAppSession.getStaffLoginAttemptCode());
                         }
                     }
                     @Override
@@ -148,7 +152,7 @@ public class User {
         usersParentRef.child(uid).child("Tickets").child("placeholder").setValue(0).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                userDataReadyListener.onUserDataReloaded(2);
+                userDataReadyListener.onUserDataReloaded(CurrentAppSession.getSignInEventCode());
             }
         });
 
