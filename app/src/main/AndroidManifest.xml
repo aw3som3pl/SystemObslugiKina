@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.CustomerMenu" />
-        <activity android:name=".activities.StaffMenu"></activity>
+        <activity android:name=".activities.StaffMenu" />
+        <activity android:name=".activities.SearchMovies" />
+        <activity android:name=".activities.Signup"></activity>
     </application>
 
 </manifest>
