@@ -72,7 +72,6 @@ public class LoginPresenter {
     public void commenceUserLogin(Activity activity, final String email, final String password) {
         if (manualLoginEnabled) {
             if (InternetConnectionListener.getINSTANCE().isConnectedToInternet()) {
-                manualLoginEnabled = false;
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(activity.getBaseContext(), R.string.notice_enter_email, Toast.LENGTH_SHORT).show();
@@ -80,7 +79,7 @@ public class LoginPresenter {
                 }
 
                 if (password.length() < 6) {
-                    Toast.makeText(activity.getBaseContext(), R.string.notice_enter_password, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity.getBaseContext(), R.string.error_short_password, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -117,18 +116,17 @@ public class LoginPresenter {
                 view.displayInternetConnectionErrorToast();
             }
         }
-        else
-            view.checkVersion();
     }
 
 
-    public void checkVersionCoherence(final int appVersion){
+    public void checkVersionCoherence(final int appVersion) {
 
         versionControlDbNodeRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                versionNumber = Integer.parseInt(dataSnapshot.child("currentVersion").getValue().toString());
-                maintenanceFlag = Integer.parseInt(dataSnapshot.child("maintenanceFlag").getValue().toString());
+
+                    versionNumber = Integer.parseInt(dataSnapshot.child("currentVersion").getValue().toString());
+                    maintenanceFlag = Integer.parseInt(dataSnapshot.child("maintenanceFlag").getValue().toString());
 
                 if(versionNumber > appVersion){
                     versionCheckResult.onVersionChecked(CurrentAppSession.getUpdateRequiredCode());
@@ -170,7 +168,7 @@ public class LoginPresenter {
                 user.setUserDataLoadedListener(new OnUserDataReload() {
                     @Override
                     public void onUserDataReloaded(int val) {
-                        if (val == 0 && user.getRole() == 0) {
+                        if (val == CurrentAppSession.getCustomerLoginCode() && user.getRole() == CurrentAppSession.getCustomerLoginCode()) {
                             CurrentAppSession.getINSTANCE().setCurrentUser(user);
                             view.hideLoadingIndicator();
                             view.navigateToCustomerMenu();

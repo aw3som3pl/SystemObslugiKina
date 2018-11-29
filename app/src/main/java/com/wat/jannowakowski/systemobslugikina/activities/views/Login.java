@@ -124,6 +124,7 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
 
     @Override
     public void displayInvalidCredentialsError(){
+        hideLoadingIndicator();
         Toast.makeText(Login.this, R.string.error_invalid_credentials, Toast.LENGTH_LONG).show();
     }
 

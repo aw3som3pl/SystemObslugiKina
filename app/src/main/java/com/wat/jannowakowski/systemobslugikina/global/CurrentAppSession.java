@@ -23,6 +23,12 @@ public class CurrentAppSession {
         return(INSTANCE);
     }
 
+    public void removeUserSession(){
+        this.currentUser = null;
+        this.currentUserAuth = null;
+        INSTANCE = null;
+    }
+
     public FirebaseAuth getCurrentUserAuth() {
         return currentUserAuth;
     }

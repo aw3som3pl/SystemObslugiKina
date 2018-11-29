@@ -14,17 +14,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.views.Login">
+        <activity android:name=".activities.views.Login"
+            android:label="@string/login"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.views.CustomerMenu" />
+        <activity android:name=".activities.views.CustomerMenu"
+            android:label="@string/logged_in_customer">
+        </activity>
         <activity android:name=".activities.views.StaffMenu" />
         <activity android:name=".activities.views.SearchMovies" />
-        <activity android:name=".activities.views.Signup"></activity>
+        <activity android:name=".activities.views.Signup"/>
     </application>
 
 </manifest>

@@ -79,7 +79,7 @@ public class Signup extends AppCompatActivity implements SignupPresenter.View {
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-
+        navigateToLogin();
     }
 
     @Override
