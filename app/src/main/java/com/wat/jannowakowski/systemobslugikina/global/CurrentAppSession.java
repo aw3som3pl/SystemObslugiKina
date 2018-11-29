@@ -37,6 +37,10 @@ public class CurrentAppSession {
         this.currentUserAuth = currentUserAuth;
     }
 
+    public String getUserFullName(){
+        return currentUser.getName()+" "+currentUser.getSurname();
+    }
+
     public static int getMaintenanceCode() {
         return 2;
     }

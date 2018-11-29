@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.wat.jannowakowski.systemobslugikina.R;
 import com.wat.jannowakowski.systemobslugikina.activities.presenters.CustomerMenuPresenter;
+import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 
 public class CustomerMenu extends AppCompatActivity implements CustomerMenuPresenter.View {
 
@@ -27,7 +28,7 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_items, menu);
 
-        setTitle("Test");
+        setTitle(CurrentAppSession.getINSTANCE().getUserFullName());
 
         presenter = new CustomerMenuPresenter(this);
         //getSupportActionBar().setTitle("Test1");

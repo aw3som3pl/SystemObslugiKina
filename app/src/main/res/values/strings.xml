@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">SystemObslugiKina</string>
+    <string name="app_name">System Obsługi Kina</string>
 
 
     <string name="title_activity_login">Sign in</string>
@@ -51,6 +51,7 @@
     <string name="user_consent_field">Potwierdzam zgodność danych osobowych</string>
     <string name="register_new_user">Zarejestruj</string>
     <string name="error_consent_not_given">Proszę zatwierdzić zgodność danych osobowych!</string>
+    <string name="signup_activity_title">Wypełnij formularz rejestracji</string>
 
     <string-array name="discount_types">
         <item>@string/student</item>
