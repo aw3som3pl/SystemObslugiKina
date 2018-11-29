@@ -7,6 +7,7 @@ import com.wat.jannowakowski.systemobslugikina.global.InternetConnectionListener
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import com.wat.jannowakowski.systemobslugikina.R;
 
 public class Login extends AppCompatActivity implements LoginPresenter.View {
+
+    private boolean backPressToExit = false;
 
     private Activity thisActivity;
     private Button btnRegister,btnLogin;
@@ -42,9 +45,7 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
 
         thisActivity = this;
         presenter = new LoginPresenter(this);
-
-        presenter.checkVersionCoherence(presenter.getCurrentVersionCode(thisActivity));
-
+        checkVersion();
 
         mainLayout = findViewById(R.id.main_layout);
         email = findViewById(R.id.email);
@@ -63,7 +64,10 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(InternetConnectionListener.getINSTANCE().isConnectedToInternet())
+                    navigateToSignupForm();
+                else
+                    displayInternetConnectionErrorToast();
             }
         });
     }
@@ -78,6 +82,22 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
     }
 
     @Override
+    public void onBackPressed() {
+        if (backPressToExit) {
+            finishAffinity();
+            System.exit(0);
+        }
+        this.backPressToExit = true;
+        Toast.makeText(getApplicationContext(), R.string.press_twice_to_exit, Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressToExit = false;
+            }
+        }, 2000);
+    }
+
+    @Override
     public void showLoadingIndicator(){
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -85,6 +105,11 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
     @Override
     public void hideLoadingIndicator(){
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void checkVersion(){
+        presenter.checkVersionCoherence(presenter.getCurrentVersionCode(thisActivity));
     }
 
     @Override

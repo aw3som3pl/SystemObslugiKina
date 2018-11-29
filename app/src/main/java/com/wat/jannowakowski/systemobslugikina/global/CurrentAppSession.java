@@ -1,6 +1,7 @@
 package com.wat.jannowakowski.systemobslugikina.global;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.wat.jannowakowski.systemobslugikina.activities.models.User;
 
 public class CurrentAppSession {
@@ -8,6 +9,7 @@ public class CurrentAppSession {
     private static CurrentAppSession INSTANCE = null;
 
     private User currentUser = null;
+    private FirebaseAuth currentUserAuth = null;
 
 
     private CurrentAppSession(){
@@ -19,6 +21,14 @@ public class CurrentAppSession {
             INSTANCE = new CurrentAppSession();
         }
         return(INSTANCE);
+    }
+
+    public FirebaseAuth getCurrentUserAuth() {
+        return currentUserAuth;
+    }
+
+    public void setCurrentUserAuth(FirebaseAuth currentUserAuth) {
+        this.currentUserAuth = currentUserAuth;
     }
 
     public static int getMaintenanceCode() {
@@ -35,10 +45,9 @@ public class CurrentAppSession {
 
     public static int getSignInEventCode() {return 2;}
 
-    public static int getStaffLoginAttemptCode() { return 1;}
+    public static int getStaffLoginCode() { return 1;}
 
-    public static int getCustomerLoginAttemptCode() { return 0;}
-
+    public static int getCustomerLoginCode() { return 0;}
 
     public static int getMaintenanceEnabledValue(){
         return 1;

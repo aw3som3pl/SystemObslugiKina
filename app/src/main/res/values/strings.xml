@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">SystemObslugiKina</string>
 
     <!-- Strings related to login -->
@@ -23,7 +23,45 @@
     <string name="notice_new_version_available">Proszę pobrać nową wersję aplikacji</string>
     <string name="notice_new_version_available_description">Kliknij w przycisk AKTUALIZUJ by pobrać najnowszą wersję ze sklepu PLAY</string>
     <string name="notice_maintenance">Trwają prace konserwacyjne</string>
-    <string name="notice_enter_email">Wprowadź adres email</string>
+    <string name="notice_enter_email" tools:ignore="Typos">Wprowadź adres email</string>
     <string name="notice_autologin_disabled">Automatyczne logowanie zostało wyłączone</string>
     <string name="notice_mainetnance_desctiption">Przepraszamy i prosimy o cierpliwość, działanie systemu zostanie przywrócone najszybciej jak to możliwe!</string>
+
+    <string name="login">Login</string>
+    <string name="password">Hasło</string>
+    <string name="sign_in">Zaloguj</string>
+    <string name="register" tools:ignore="Typos">Utwórz nowe konto</string>
+
+    <string name="enter_name">Podaj imię</string>
+    <string name="enter_surname">Podaj nazwisko</string>
+    <string name="enter_email">Podaj email</string>
+    <string name="enter_password">Podaj hasło</string>
+    <string name="confirm_password">Powtórz hasło</string>
+
+    <string name="student">Uczeń / Student</string>
+    <string name="disabled_person">Osoba niepełnosprawna</string>
+    <string name="adult">Osoba dorosła</string>
+    <string name="child">Dziecko do 6 roku życia</string>
+    <string name="enter_discount_type">Do jakiej kategorii należysz?</string>
+    <string name="press_twice_to_exit">Wciśnij ponownie by wyjść</string>
+    <string name="error_enter_valid_email" tools:ignore="Typos">Podaj poprawny adres E-mail!</string>
+    <string name="error_enter_name">Wpisz swoje imię!</string>
+    <string name="error_enter_surname">Wpisz swoje nazwisko!</string>
+    <string name="error_enter_email">Wpisz swój email!</string>
+    <string name="error_passwords_do_not_match">Hasła nie są jednakowe!</string>
+    <string name="error_enter_new_password">Podane hasło musi mieć powyżej 6 znaków!</string>
+    <string name="error_enter_confirmed_password">Powtórzone hasło się nie zgadza!</string>
+    <string name="error_signup_failed">Rejestracja zakończona niepowodzeniem! Utracono połączenie z siecią lub obecny email jest już użyty!</string>
+    <string name="notice_account_created">Konto utworzone pomyślnie!</string>
+    <string name="user_consent_field">Potwierdzam zgodność danych osobowych</string>
+    <string name="register_new_user">Zarejestruj</string>
+    <string name="error_consent_not_given">Proszę zatwierdzić zgodność danych osobowych!</string>
+
+    <string-array name="discount_types">
+        <item>@string/student</item>
+        <item>@string/disabled_person</item>
+        <item>@string/adult</item>
+        <item>@string/child</item>
+    </string-array>
+
 </resources>

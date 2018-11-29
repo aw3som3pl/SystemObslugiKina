@@ -1,8 +1,11 @@
 package com.wat.jannowakowski.systemobslugikina.activities.models;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 import com.wat.jannowakowski.systemobslugikina.interfaces.*;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,12 +23,34 @@ public class User {
     private DatabaseReference mDatabase;
     private DatabaseReference usersParentRef;
     private OnUserDataReload userDataReadyListener = null;
+    private OnUserRegistered newUserRegisteredListener = null;
     private DatabaseReference userDbNodeRef;
-
+    private FirebaseAuth userAuth;
     private int role;
     private String uid;
     private String name;
     private String surname;
+    private String email;
+    private String password;
+    private int discountType;
+
+    private ArrayList<Ticket> activeTicketsList;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public FirebaseAuth getUserAuth() {
+        return userAuth;
+    }
+
+    public void setUserAuth(FirebaseAuth userAuth) {
+        this.userAuth = userAuth;
+    }
 
     public DatabaseReference getUserDbNodeRef() {
         return userDbNodeRef;
@@ -91,27 +116,22 @@ public class User {
         this.activeTicketsList = activeTicketsList;
     }
 
-    private String email;
-    private int discountType;
-    private ArrayList<Ticket> activeTicketsList;
-
 
     public User(final FirebaseUser user) throws NullPointerException{
 
         activeTicketsList = new ArrayList<>();
 
         setUid(user.getUid());
+        setUserAuth(CurrentAppSession.getINSTANCE().getCurrentUserAuth());
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         usersParentRef = mDatabase.child("Users");
         userDbNodeRef = usersParentRef.child(getUid());
+
         userDbNodeRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(!(dataSnapshot.exists())) {
-                            createUserNode(getUid());
-                        } else {
+                    public void onDataChange(DataSnapshot dataSnapshot) {   //dane logowania poprawne
 
                             name = dataSnapshot.child("name").getValue().toString();
                             surname = dataSnapshot.child("surname").getValue().toString();
@@ -120,21 +140,18 @@ public class User {
                             email = dataSnapshot.child("email").getValue().toString();
 
                             for(DataSnapshot ticket : dataSnapshot.child("Tickets").getChildren()){
-                                if(!ticket.getKey().equalsIgnoreCase("placeholder")) {      //omijamy placeholder
                                     for (DataSnapshot ticketEntry : ticket.getChildren()) {
                                         activeTicketsList.add(new Ticket(new Movie(),
                                                 Integer.parseInt(ticketEntry.child("discountType").getValue().toString()),
                                                 ticketEntry.child("seatCollumn").getValue().toString(),
                                                 ticketEntry.child("seatRow").getValue().toString()));
-                                    }
                                 }
                             }
-                            if(role== CurrentAppSession.getCustomerLoginAttemptCode())
-                            userDataReadyListener.onUserDataReloaded(CurrentAppSession.getCustomerLoginAttemptCode());
+                            if(role== CurrentAppSession.getCustomerLoginCode())      //rozróżnienie roli użytkownika w systemie
+                            userDataReadyListener.onUserDataReloaded(CurrentAppSession.getCustomerLoginCode());
                             else
-                                userDataReadyListener.onUserDataReloaded(CurrentAppSession.getStaffLoginAttemptCode());
+                                userDataReadyListener.onUserDataReloaded(CurrentAppSession.getStaffLoginCode());
                         }
-                    }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
@@ -142,23 +159,46 @@ public class User {
 
                 });
     }
-    private void createUserNode(String uid) {
 
-        usersParentRef.child(uid).child("name").setValue("");
-        usersParentRef.child(uid).child("surname").setValue("");
-        usersParentRef.child(uid).child("email").setValue("");
-        usersParentRef.child(uid).child("role").setValue(0);
-        usersParentRef.child(uid).child("discountType").setValue(0);
-        usersParentRef.child(uid).child("Tickets").child("placeholder").setValue(0).addOnCompleteListener(new OnCompleteListener<Void>() {
+    public User(FirebaseAuth temp_auth,String temp_name, String temp_surname, String temp_email, int temp_discountType, int temp_role){
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        usersParentRef = mDatabase.child("Users");
+
+        this.name = temp_name;
+        this.surname = temp_surname;
+        this.email = temp_email;
+        this.discountType = temp_discountType;
+        this.role = temp_role;
+        this.userAuth = temp_auth;
+        this.uid = temp_auth.getUid();
+
+        createUserNode(name,surname,email,discountType,role,uid);
+    }
+
+
+
+    private void createUserNode(String temp_name, String temp_surname, String temp_email, int temp_discountType, int temp_role, String temp_uid) {
+
+        usersParentRef.child(temp_uid).child("name").setValue(temp_name);
+        usersParentRef.child(temp_uid).child("surname").setValue(temp_surname);
+        usersParentRef.child(temp_uid).child("email").setValue(temp_email);
+        usersParentRef.child(temp_uid).child("role").setValue(temp_discountType);
+        usersParentRef.child(temp_uid).child("discountType").setValue(temp_role).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                userDataReadyListener.onUserDataReloaded(CurrentAppSession.getSignInEventCode());
+                newUserRegisteredListener.onNewUserRegistered(true);
             }
         });
 
     }
 
+
     public void setUserDataLoadedListener(OnUserDataReload userDataReadyListener){
         this.userDataReadyListener = userDataReadyListener;
+    }
+
+    public void setNewUserRegisteredListener(OnUserRegistered userRegisteredListener){
+        this.newUserRegisteredListener = userRegisteredListener;
     }
 }

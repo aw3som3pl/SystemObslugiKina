@@ -35,20 +35,21 @@ public class LoginPresenter {
     private View view;
     private int versionNumber;
     private int maintenanceFlag;
-    private String maintenanceMessage;
     private boolean manualLoginEnabled = false;
-    private boolean maintenanceFlagState = false;
-    private boolean versionErrorFlagState = false;
 
     private User user;
 
     public LoginPresenter(View v) {
         this.view = v;
 
+
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         versionControlDbNodeRef = mDatabase.child("VersionControll");
         DatabaseReference users_node_ref = mDatabase.child("Users");
         auth = FirebaseAuth.getInstance();
+
+        CurrentAppSession.getINSTANCE().setCurrentUserAuth(auth);
+
         FirebaseUser firebaseUser = auth.getCurrentUser();
 
         setOnVersionCheckedListener(new OnVersionCheck() {
@@ -98,12 +99,7 @@ public class LoginPresenter {
                                     user.setUserDataLoadedListener(new OnUserDataReload() {
                                         @Override
                                         public void onUserDataReloaded(int action) {
-                                            if (action == CurrentAppSession.getSignInEventCode()) {
-                                                CurrentAppSession.getINSTANCE().setCurrentUser(user);
-                                                view.hideLoadingIndicator();
-                                                view.navigateToSignupForm();
-                                            }
-                                            if (action == CurrentAppSession.getCustomerLoginAttemptCode()) {
+                                            if (action == CurrentAppSession.getCustomerLoginCode()) {
                                                 CurrentAppSession.getINSTANCE().setCurrentUser(user);
                                                 view.hideLoadingIndicator();
                                                 view.navigateToCustomerMenu();
@@ -121,6 +117,8 @@ public class LoginPresenter {
                 view.displayInternetConnectionErrorToast();
             }
         }
+        else
+            view.checkVersion();
     }
 
 
@@ -131,7 +129,6 @@ public class LoginPresenter {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 versionNumber = Integer.parseInt(dataSnapshot.child("currentVersion").getValue().toString());
                 maintenanceFlag = Integer.parseInt(dataSnapshot.child("maintenanceFlag").getValue().toString());
-                maintenanceMessage = dataSnapshot.child("maintenanceMsg").getValue().toString();
 
                 if(versionNumber > appVersion){
                     versionCheckResult.onVersionChecked(CurrentAppSession.getUpdateRequiredCode());
@@ -163,11 +160,10 @@ public class LoginPresenter {
         return 0;
     }
 
-
     private void tryAutoLogin(){
 
         if(InternetConnectionListener.getINSTANCE().isConnectedToInternet()) {
-            if (auth.getCurrentUser() != null) {
+            if (auth.getCurrentUser() != null) {        //jeśli użytkownik był uprzednio zalogowany oraz się nie wylogował (auth z pamięci aplikacji)
                 view.showLoadingIndicator();
                 user = new User(auth.getCurrentUser());
 
@@ -202,6 +198,7 @@ public class LoginPresenter {
     }
 
     public interface View{
+        void checkVersion();
         void displayInvalidCredentialsError();
         void displayInternetConnectionErrorToast();
         void displayAutoLoginDisabledToast();
