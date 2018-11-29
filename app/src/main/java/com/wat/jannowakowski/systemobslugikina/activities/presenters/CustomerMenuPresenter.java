@@ -1,17 +1,19 @@
 package com.wat.jannowakowski.systemobslugikina.activities.presenters;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
-import com.wat.jannowakowski.systemobslugikina.activities.models.User;
 import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 
-/**
- * Created by Jan Nowakowski on 24.11.2018.
- */
 
 public class CustomerMenuPresenter {
 
     private View view;
+
+    private Button userTickets,showRepertoire;
+    private RecyclerView currentRepertoireList;
+
 
     public CustomerMenuPresenter(View v) {
         this.view = v;
