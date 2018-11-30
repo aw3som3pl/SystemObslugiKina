@@ -64,6 +64,11 @@
     <string name="language_method_lector">Lektor PL</string>
     <string name="language_method_dubbing">Dubbing PL</string>
     <string name="language_method_subtitles">Napisy PL</string>
+    <string name="loading_in_progress">Ładowanie...</string>
+    <string name="repertoir_for_today">Repertuar na dziś</string>
+    <string name="special_offer">Oferta specjalna</string>
+    <string name="my_tickets">Moje bilety</string>
+    <string name="repertoir">Repertuar</string>
 
     <string-array name="discount_types">
         <item>@string/student</item>

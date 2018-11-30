@@ -85,6 +85,7 @@ public class CustomerMenuPresenter {
 
     }
     public void reloadCurrentRepertoire(){
+        view.showLoadingIndicator();
         Repertoir currentRepertoire = new Repertoir(327);
         reloadScreeningsInRepertoire(currentRepertoire);
     }

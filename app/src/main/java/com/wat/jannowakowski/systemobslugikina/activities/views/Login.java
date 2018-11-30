@@ -79,6 +79,7 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        presenter = null;
     }
 
     @Override

@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.wat.jannowakowski.systemobslugikina.R;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Screening;
@@ -25,15 +27,28 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
     private Activity thisActivity;
 
     private CustomerMenuPresenter presenter;
-    private Button showUserTicketsBtn,showRepertoirBtn;
+    private RelativeLayout loadingOverlayLayout;
+    private Button showUserTicketsBtn, showRepertoirBtn;
     private RecyclerView currentScreeningsList;
     private RecyclerView.Adapter repertoireAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private RepertoirListAdapter.RecyclerViewClickListener mRepertoirListListener = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_menu);
+
+        loadingOverlayLayout = findViewById(R.id.loading_in_progress);
+
+        showUserTicketsBtn = findViewById(R.id.active_tickets);
+        showRepertoirBtn = findViewById(R.id.browse_movies);
+        currentScreeningsList = findViewById(R.id.current_screenings);
+
+        currentScreeningsList.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(thisActivity);
+        currentScreeningsList.setLayoutManager(mLayoutManager);
 
         thisActivity = this;
 
@@ -45,13 +60,6 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
 
         presenter.reloadCurrentRepertoire();
 
-        showUserTicketsBtn = findViewById(R.id.active_tickets);
-        showRepertoirBtn = findViewById(R.id.browse_movies);
-        currentScreeningsList = findViewById(R.id.current_screenings);
-
-        currentScreeningsList.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(thisActivity);
-        currentScreeningsList.setLayoutManager(mLayoutManager);
 
 
     }
@@ -65,8 +73,7 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.settings:
                 break;
             case R.id.contact:
@@ -79,21 +86,44 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
     }
 
     @Override
-    public void navigateToLogin(){
+    public void onDestroy(){
+        super.onDestroy();
+
+    }
+
+    @Override
+    public void navigateToLogin() {
         startActivity(new Intent(CustomerMenu.this, Login.class));
         finish();
     }
-    @Override
-    public void showLoadingIndicator(){}
 
     @Override
-    public void hideLoadingIndicator(){}
+    public void showLoadingIndicator() {
+        loadingOverlayLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        loadingOverlayLayout.setVisibility(View.GONE);
+    }
+
 
     @Override
     public void setScreeningsRecyclerViewAdapter(ArrayList<Screening> screeningsList){
 
-        repertoireAdapter = new RepertoirListAdapter(screeningsList);
+        mRepertoirListListener = new RepertoirListAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(CustomerMenu.this, "Click "+ position, Toast.LENGTH_LONG).show();
+            }
+        };
+
+        repertoireAdapter = new RepertoirListAdapter(screeningsList,mRepertoirListListener);
         currentScreeningsList.setAdapter(repertoireAdapter);
+
+        hideLoadingIndicator();
+
+
 
     }
 
