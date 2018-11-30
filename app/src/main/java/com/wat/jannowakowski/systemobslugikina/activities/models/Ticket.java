@@ -14,12 +14,12 @@ public class Ticket {
         this.discountType = discountType;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public String getMovieDbRef() {
+        return movieDbRef;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setMovieDbRef(String movieDbRef) {
+        this.movieDbRef = movieDbRef;
     }
 
     public String getSeatCollumn() {
@@ -39,13 +39,13 @@ public class Ticket {
     }
 
     private int discountType;
-    private Movie movie;
+    private String movieDbRef;
     private String seatCollumn;
     private String seatRow;
 
-    public Ticket(Movie temp_movie, int temp_discountType, String temp_seatCollumn, String temp_seatRow){
+    public Ticket(String temp_movie_ref, int temp_discountType, String temp_seatCollumn, String temp_seatRow){
         this.discountType = temp_discountType;
-        this.movie = temp_movie;
+        this.movieDbRef = temp_movie_ref;
         this.seatCollumn = temp_seatCollumn;
         this.seatRow = temp_seatRow;
     }

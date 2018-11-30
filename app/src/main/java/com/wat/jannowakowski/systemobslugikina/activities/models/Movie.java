@@ -1,24 +1,26 @@
 package com.wat.jannowakowski.systemobslugikina.activities.models;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * Created by Jan Nowakowski on 24.11.2018.
  */
 
 public class Movie {
 
-    private Byte[] thumbnail;
+    private Drawable thumbnail;
     private int ageRating;
     private String description;
     private String title;
     private int duration;
-    private String languageMode;
+    private int languageMode;
 
 
-    public Byte[] getThumbnail() {
+    public Drawable getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(Byte[] thumbnail) {
+    public void setThumbnail(Drawable thumbnail) {
         this.thumbnail = thumbnail;
     }
 
@@ -54,15 +56,15 @@ public class Movie {
         this.duration = duration;
     }
 
-    public String getLanguageMode() {
+    public int getLanguageMode() {
         return languageMode;
     }
 
-    public void setLanguageMode(String languageMode) {
+    public void setLanguageMode(int languageMode) {
         this.languageMode = languageMode;
     }
 
-    public Movie(Byte[] thumbnail, int ageRating, String description, String title, int duration, String languageMode) {
+    public Movie(Drawable thumbnail, int ageRating, String description, String title, int duration, int languageMode) {
         this.thumbnail = thumbnail;
         this.ageRating = ageRating;
         this.description = description;

@@ -53,6 +53,18 @@
     <string name="error_consent_not_given">Proszę zatwierdzić zgodność danych osobowych!</string>
     <string name="signup_activity_title">Wypełnij formularz rejestracji</string>
 
+    <string name="age_cathegory_infants">3+</string>
+    <string name="age_cathegory_primary">6+</string>
+    <string name="age_cathegory_secondary">12+</string>
+    <string name="age_cathegory_adults">18+</string>
+
+    <string name="screening_technology_3d">3D</string>
+    <string name="screening_technology_2d">2D</string>
+
+    <string name="language_method_lector">Lektor PL</string>
+    <string name="language_method_dubbing">Dubbing PL</string>
+    <string name="language_method_subtitles">Napisy PL</string>
+
     <string-array name="discount_types">
         <item>@string/student</item>
         <item>@string/disabled_person</item>
