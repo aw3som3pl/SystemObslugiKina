@@ -70,7 +70,7 @@ public abstract class EnumHandler {
 
     public static String parseDayOfYearToDate(int dayOfYear){
 
-        String sdf = "dd.mm.yyyy";
+        String sdf = "dd.MM.yyyy";
         SimpleDateFormat dateFormat = new SimpleDateFormat(sdf);
 
         Calendar calendar = Calendar.getInstance();

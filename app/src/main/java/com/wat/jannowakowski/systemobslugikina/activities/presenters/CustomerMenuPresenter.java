@@ -13,7 +13,6 @@ import com.wat.jannowakowski.systemobslugikina.activities.models.Movie;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Repertoir;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Screening;
 import com.wat.jannowakowski.systemobslugikina.activities.models.ScreeningRoom;
-import com.wat.jannowakowski.systemobslugikina.adapters.RepertoirListAdapter;
 import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 import com.wat.jannowakowski.systemobslugikina.interfaces.OnMoviesDataReload;
 import com.wat.jannowakowski.systemobslugikina.interfaces.OnScreeningRoomsDataReload;
@@ -38,7 +37,9 @@ public class CustomerMenuPresenter {
     private OnScreeningRoomsDataReload onScreeningRoomsDataReloadedListener = null;
 
     private ArrayList<Screening> screeningsInRepertoire;
+    private ArrayList<String> moviesBeingScreenedDbRef; //potrzebne do wyłapania filmów przeznaczonych do pobrania
     private ArrayList<Movie> moviesBeingScreened;
+    private ArrayList<String> screeningRoomsBeingUsedDbRef;
     private ArrayList<ScreeningRoom> screeningRoomsBeingUsed;
 
 
@@ -53,13 +54,16 @@ public class CustomerMenuPresenter {
         screeningsInRepertoire = new ArrayList<>();
         moviesBeingScreened = new ArrayList<>();
         screeningRoomsBeingUsed = new ArrayList<>();
+        moviesBeingScreenedDbRef = new ArrayList<>();
+        screeningRoomsBeingUsedDbRef = new ArrayList<>();
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         setOnScreeningsDataReloadedListener(new OnScreeningsDataReload() {  // czekamy na załadowanie seansów będących w określonym repertuarze
             @Override
             public void OnScreeningsDataReloaded(boolean state) {
                 if(state)
-                reloadMoviesBeingScreened(screeningsInRepertoire);
+                reloadMoviesBeingScreened(moviesBeingScreenedDbRef,screeningsInRepertoire);
             }
         });
 
@@ -67,7 +71,7 @@ public class CustomerMenuPresenter {
             @Override
             public void OnMoviesDataReloaded(boolean state) {
                 if(state)
-                reloadScreeningRoomsOfMovies(screeningsInRepertoire);
+                reloadScreeningRoomsOfMovies(screeningRoomsBeingUsedDbRef,screeningsInRepertoire);
             }
         });
 
@@ -85,7 +89,15 @@ public class CustomerMenuPresenter {
         reloadScreeningsInRepertoire(currentRepertoire);
     }
 
-    public void reloadScreeningsInRepertoire(final Repertoir repertoir){
+    private void addMovieToScreening(Movie movie,Screening screening){
+        screening.setMovie(movie);
+    }
+
+    private void addScreeningRoomToScreening(ScreeningRoom screeningRoom, Screening screening){
+        screening.setScreeningRoom(screeningRoom);
+    }
+
+    private void reloadScreeningsInRepertoire(final Repertoir repertoir){
 
         screeningsParentDbRef = mDatabase.child("Repertoire").child(String.valueOf(repertoir.getDayOfYear())).child("Screenings").getRef();
 
@@ -104,8 +116,10 @@ public class CustomerMenuPresenter {
                             screening.child("timeOfScreening").getValue().toString(),
                             Integer.parseInt(screening.child("isPremiere").getValue().toString()));
                     screeningsInRepertoire.add(newScreening);
+                    moviesBeingScreenedDbRef.add(newScreening.getMovieDbRef());
+                    screeningRoomsBeingUsedDbRef.add(newScreening.getScreeningRoomDbRef());
                 }
-                onScreeningsDataReloadedListener.OnScreeningsDataReloaded(true);
+                onScreeningsDataReloadedListener.OnScreeningsDataReloaded(true);    //czekamy aż skończy się ładowanie (czeka na wykonanie się pętli)
             }
 
             @Override
@@ -116,25 +130,30 @@ public class CustomerMenuPresenter {
 
     }
 
-    private void reloadMoviesBeingScreened(ArrayList<Screening> screeningsList){
+    private void reloadMoviesBeingScreened(final ArrayList<String> moviesDbRefBeingScreened, final ArrayList<Screening> screeningsInRepertoireList){
 
         moviesParentDbRef = mDatabase.child("Movies").getRef();
 
-        for(final Screening screening : screeningsList){
-
-            DatabaseReference movieBeingScreened = moviesParentDbRef.child(screening.getMovieDbRef()).getRef();
-
-            movieBeingScreened.addListenerForSingleValueEvent(new ValueEventListener() {
+        moviesParentDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Movie newMovieBeingScreened = new Movie(EnumHandler.parseThumbnailToDrawable(dataSnapshot.child("thumbnail").getValue().toString(),customerMenuActivityRef),
-                            Integer.parseInt(dataSnapshot.child("age_rating").getValue().toString()),
-                            dataSnapshot.child("description").getValue().toString(),
-                            dataSnapshot.child("title").getValue().toString(),
-                            Integer.parseInt(dataSnapshot.child("duration").getValue().toString()),
-                            Integer.parseInt(dataSnapshot.child("language").getValue().toString()));
-                    moviesBeingScreened.add(newMovieBeingScreened);
-                    screening.setMovie(newMovieBeingScreened);
+                    for(DataSnapshot movieData : dataSnapshot.getChildren()) {
+                        if (moviesDbRefBeingScreened.contains(movieData.getKey())) {
+                            Movie newMovieBeingScreened = new Movie(EnumHandler.parseThumbnailToDrawable(movieData.child("thumbnail").getValue().toString(), customerMenuActivityRef),
+                                    Integer.parseInt(movieData.child("age_rating").getValue().toString()),
+                                    movieData.child("description").getValue().toString(),
+                                    movieData.child("title").getValue().toString(),
+                                    Integer.parseInt(movieData.child("duration").getValue().toString()),
+                                    Integer.parseInt(movieData.child("language").getValue().toString()));
+                            moviesBeingScreened.add(newMovieBeingScreened);
+                            for(Screening screening : screeningsInRepertoireList){
+                                if(screening.getMovieDbRef().equalsIgnoreCase(movieData.getKey())){
+                                    addMovieToScreening(newMovieBeingScreened,screening);
+                                }
+                            }
+                        }
+                    }
+                    onMoviesDataReloadedListener.OnMoviesDataReloaded(true);
                 }
 
                 @Override
@@ -143,26 +162,30 @@ public class CustomerMenuPresenter {
                 }
             });
         }
-        onMoviesDataReloadedListener.OnMoviesDataReloaded(true);
-    }
 
-    private void reloadScreeningRoomsOfMovies(ArrayList<Screening> screeningsList){
+
+    private void reloadScreeningRoomsOfMovies(final ArrayList<String> screeningRoomsBeingUsedDbRef, final ArrayList<Screening> screeningsInRepertoireList){
 
         screeningRoomsParentDbRef = mDatabase.child("ScreeningRooms").getRef();
 
-        for(final Screening screening : screeningsList){
-
-            DatabaseReference screeningRoomBeingUsed = screeningRoomsParentDbRef.child(screening.getScreeningRoomDbRef()).getRef();
-
-            screeningRoomBeingUsed.addListenerForSingleValueEvent(new ValueEventListener() {
+        screeningRoomsParentDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                   ScreeningRoom newScreeningRoomBeingUsed = new ScreeningRoom(Integer.parseInt(dataSnapshot.child("maxSeatCount").getValue().toString()),
-                           Integer.parseInt(dataSnapshot.child("projectionTechnology").getValue().toString()),
-                           Integer.parseInt(dataSnapshot.child("referenceNumber").getValue().toString()),
-                           Integer.parseInt(dataSnapshot.child("status").getValue().toString()));
-                   screeningRoomsBeingUsed.add(newScreeningRoomBeingUsed);
-                   screening.setScreeningRoom(newScreeningRoomBeingUsed);
+                    for (DataSnapshot screeningRoomData : dataSnapshot.getChildren()) {
+                        if (screeningRoomsBeingUsedDbRef.contains(screeningRoomData.getKey())) {
+                            ScreeningRoom newScreeningRoomBeingUsed = new ScreeningRoom(Integer.parseInt(screeningRoomData.child("maxSeatCount").getValue().toString()),
+                                    Integer.parseInt(screeningRoomData.child("projectionTechnology").getValue().toString()),
+                                    Integer.parseInt(screeningRoomData.child("referenceNumber").getValue().toString()),
+                                    Integer.parseInt(screeningRoomData.child("status").getValue().toString()));
+                            screeningRoomsBeingUsed.add(newScreeningRoomBeingUsed);
+                            for (Screening screening : screeningsInRepertoireList) {
+                                if (screening.getScreeningRoomDbRef().equalsIgnoreCase(screeningRoomData.getKey())) {
+                                    addScreeningRoomToScreening(newScreeningRoomBeingUsed, screening);
+                                }
+                            }
+                        }
+                    }
+                    onScreeningRoomsDataReloadedListener.OnScreeningRoomsDataReloaded(true);
                 }
 
                 @Override
@@ -170,9 +193,8 @@ public class CustomerMenuPresenter {
 
                 }
             });
-        }
-        onScreeningRoomsDataReloadedListener.OnScreeningRoomsDataReloaded(true);
     }
+
 
     public void commenceUserLogout(){
 

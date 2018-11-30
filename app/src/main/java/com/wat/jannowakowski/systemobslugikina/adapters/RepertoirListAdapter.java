@@ -79,7 +79,7 @@ public class RepertoirListAdapter extends RecyclerView.Adapter<RepertoirListAdap
 
             if(screeningsList.get(position).isPremiere())
                 premiereIcon.setVisibility(View.VISIBLE);
-            //screeningThumbnail.setImageDrawable(screeningsList.get(position).getMovie().getThumbnail());
+            screeningThumbnail.setImageDrawable(screeningsList.get(position).getMovie().getThumbnail());
             screeningTitle.setText(screeningsList.get(position).getMovie().getTitle());
             screeningTechnology.setText(EnumHandler.parseScreeningTechnology(holder.screeningView.getContext(),screeningsList.get(position).getScreeningTechnology()));
             screeningAgeRestriction.setText(EnumHandler.parseAgeRestriction(holder.screeningView.getContext(),screeningsList.get(position).getMovie().getAgeRating()));
