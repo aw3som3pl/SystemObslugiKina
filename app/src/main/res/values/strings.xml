@@ -22,6 +22,7 @@
     <string name="register" tools:ignore="Typos">Utwórz nowe konto</string>
 
     <string name="logged_in_customer">Zalogowany użytkownik</string>
+    <string name="logged_in_staff">Panel administracyjny</string>
 
     <string name="enter_name">Podaj imię</string>
     <string name="enter_surname">Podaj nazwisko</string>
@@ -64,6 +65,8 @@
     <string name="language_method_lector">Lektor PL</string>
     <string name="language_method_dubbing">Dubbing PL</string>
     <string name="language_method_subtitles">Napisy PL</string>
+
+    <string name="user_tickets_title">Twoje Bilety</string>
     <string name="loading_in_progress">Ładowanie...</string>
     <string name="repertoir_for_today">Repertuar na dziś</string>
     <string name="special_offer">Oferta specjalna</string>

@@ -14,23 +14,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.views.Login"
+        <activity
+            android:name=".activities.views.Login"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.views.CustomerMenu"
-            android:label="@string/logged_in_customer">
-        </activity>
-        <activity android:name=".activities.views.StaffMenu" />
+        <activity
+            android:name=".activities.views.CustomerMenu"
+            android:label="@string/logged_in_customer" />
+        <activity android:name=".activities.views.StaffMenu"
+            android:label="@string/logged_in_staff"/>
         <activity android:name=".activities.views.SearchMovies" />
-        <activity android:name=".activities.views.Signup"
-            android:label="@string/signup_activity_title">
-        </activity>
+        <activity
+            android:name=".activities.views.Signup"
+            android:label="@string/signup_activity_title" />
+        <activity
+            android:name=".activities.views.UserTickets"
+            android:label="@string/user_tickets_title"></activity>
+        <activity android:name=".activities.views.SearchRepertoire"></activity>
     </application>
 
 </manifest>

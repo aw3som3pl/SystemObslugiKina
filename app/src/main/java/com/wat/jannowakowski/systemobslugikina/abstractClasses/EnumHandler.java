@@ -20,39 +20,76 @@ import java.util.Date;
 public abstract class EnumHandler {
 
     public static String parseAgeRestriction(Context c, int value){
-        int infantsCathegory = 0;
-        int primarySchoolCathegory = 1;
-        int secondarySchoolCathegory = 2;
-        int matureCathegory = 3;
+        final int infantsCathegory = 0;
+        final int primarySchoolCathegory = 1;
+        final int secondarySchoolCathegory = 2;
+        final int matureCathegory = 3;
 
-        if(value == infantsCathegory)
-            return c.getString(R.string.age_cathegory_infants);
+        switch (value) {
+            case infantsCathegory:
+                return c.getString(R.string.age_cathegory_infants);
+            case primarySchoolCathegory:
+                return c.getString(R.string.age_cathegory_primary);
+            case secondarySchoolCathegory:
+                return c.getString(R.string.age_cathegory_secondary);
+            case matureCathegory:
+                return c.getString(R.string.age_cathegory_adults);
+            default:
+                return c.getString(R.string.age_cathegory_infants);
+        }
+    }
+
+    public static int encodeAgeRestriction(Context c, String value){
+        final int infantsCathegory = 0;
+        final int primarySchoolCathegory = 1;
+        final int secondarySchoolCathegory = 2;
+        final int matureCathegory = 3;
+
+        if(value.equalsIgnoreCase(c.getString(R.string.age_cathegory_infants)))
+            return infantsCathegory;
         else
-        if(value == primarySchoolCathegory)
-            return c.getString(R.string.age_cathegory_primary);
+        if(value.equalsIgnoreCase(c.getString(R.string.age_cathegory_primary)))
+            return primarySchoolCathegory;
         else
-        if(value == secondarySchoolCathegory)
-            return c.getString(R.string.age_cathegory_secondary);
+        if(value.equalsIgnoreCase(c.getString(R.string.age_cathegory_secondary)))
+            return secondarySchoolCathegory;
         else
-            return c.getString(R.string.age_cathegory_adults);
+            return matureCathegory;
     }
 
     public static String parseLanguageMethod(Context c, int value) {
-        int dubbing = 0;
-        int subtitles = 1;
-        int lector = 2;
+        final int dubbing = 0;
+        final int subtitles = 1;
+        final int lector = 2;
 
-        if (value == dubbing)
-            return c.getString(R.string.language_method_dubbing);
-        else if (value == subtitles)
-            return c.getString(R.string.language_method_subtitles);
+        switch (value) {
+            case dubbing:
+                return c.getString(R.string.language_method_dubbing);
+            case subtitles:
+                return c.getString(R.string.language_method_subtitles);
+            case lector:
+                return c.getString(R.string.language_method_lector);
+            default:
+                return c.getString(R.string.language_method_dubbing);
+        }
+    }
+
+    public static int encodeLanguageMethod(Context c, String value){
+        final int dubbing = 0;
+        final int subtitles = 1;
+        final int lector = 2;
+
+        if (value.equalsIgnoreCase(c.getString(R.string.language_method_dubbing)))
+            return dubbing;
+        else if (value.equalsIgnoreCase(c.getString(R.string.language_method_subtitles)))
+            return subtitles;
         else
-            return c.getString(R.string.language_method_lector);
+            return lector;
     }
 
     public static String parseScreeningTechnology(Context c, int value) {
-        int threeDimensional = 0;
-        int twoDimensional = 1;
+        final int threeDimensional = 0;
+        final int twoDimensional = 1;
 
         if (value == threeDimensional)
             return c.getString(R.string.screening_technology_3d);
@@ -62,7 +99,7 @@ public abstract class EnumHandler {
     }
 
     public static boolean parsePremiereFlagState(int value){
-        int notPremiere = 0;
+        final int notPremiere = 0;
         int isPremiere = 1;
 
         return value == isPremiere;

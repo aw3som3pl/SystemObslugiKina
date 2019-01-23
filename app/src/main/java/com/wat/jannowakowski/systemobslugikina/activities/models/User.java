@@ -176,8 +176,6 @@ public class User {
         createUserNode(name,surname,email,discountType,role,uid);
     }
 
-
-
     private void createUserNode(String temp_name, String temp_surname, String temp_email, int temp_discountType, int temp_role, String temp_uid) {
 
         usersParentRef.child(temp_uid).child("name").setValue(temp_name);

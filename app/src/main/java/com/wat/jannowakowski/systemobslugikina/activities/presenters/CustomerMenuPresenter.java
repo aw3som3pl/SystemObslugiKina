@@ -28,9 +28,6 @@ public class CustomerMenuPresenter {
     private Activity customerMenuActivityRef = null;
 
     private DatabaseReference mDatabase;
-    private DatabaseReference moviesParentDbRef;
-    private DatabaseReference screeningsParentDbRef;
-    private DatabaseReference screeningRoomsParentDbRef;
 
     private OnScreeningsDataReload onScreeningsDataReloadedListener = null;
     private OnMoviesDataReload onMoviesDataReloadedListener = null;
@@ -46,7 +43,6 @@ public class CustomerMenuPresenter {
     public void setCustomerMenuActivityRef(Activity customerMenuActivityRef) {
         this.customerMenuActivityRef = customerMenuActivityRef;
     }
-
 
     public CustomerMenuPresenter(View v) {
 
@@ -84,6 +80,7 @@ public class CustomerMenuPresenter {
         });
 
     }
+
     public void reloadCurrentRepertoire(){
         view.showLoadingIndicator();
         Repertoir currentRepertoire = new Repertoir(327);
@@ -100,7 +97,7 @@ public class CustomerMenuPresenter {
 
     private void reloadScreeningsInRepertoire(final Repertoir repertoir){
 
-        screeningsParentDbRef = mDatabase.child("Repertoire").child(String.valueOf(repertoir.getDayOfYear())).child("Screenings").getRef();
+        DatabaseReference screeningsParentDbRef = mDatabase.child("Repertoire").child(String.valueOf(repertoir.getDayOfYear())).child("Screenings").getRef();
 
         screeningsParentDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -133,7 +130,7 @@ public class CustomerMenuPresenter {
 
     private void reloadMoviesBeingScreened(final ArrayList<String> moviesDbRefBeingScreened, final ArrayList<Screening> screeningsInRepertoireList){
 
-        moviesParentDbRef = mDatabase.child("Movies").getRef();
+        DatabaseReference moviesParentDbRef = mDatabase.child("Movies").getRef();
 
         moviesParentDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -164,10 +161,9 @@ public class CustomerMenuPresenter {
             });
         }
 
-
     private void reloadScreeningRoomsOfMovies(final ArrayList<String> screeningRoomsBeingUsedDbRef, final ArrayList<Screening> screeningsInRepertoireList){
 
-        screeningRoomsParentDbRef = mDatabase.child("ScreeningRooms").getRef();
+        DatabaseReference screeningRoomsParentDbRef = mDatabase.child("ScreeningRooms").getRef();
 
         screeningRoomsParentDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -195,7 +191,6 @@ public class CustomerMenuPresenter {
                 }
             });
     }
-
 
     public void commenceUserLogout(){
 

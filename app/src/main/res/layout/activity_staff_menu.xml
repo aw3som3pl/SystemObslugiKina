@@ -1,9 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/staff_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.wat.jannowakowski.systemobslugikina.activities.views.StaffMenu">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/loading_in_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#99000000"
+        android:elevation="3dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/sending_indicator"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:scaleX="2"
+            android:scaleY="2" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sending_indicator"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19dp"
+            android:text="@string/loading_in_progress"
+            android:textColor="@color/text_white"
+            android:textSize="24dp" />
+    </RelativeLayout>
+
+    <android.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        app:layout_anchorGravity="bottom">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/round_corners_8"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/repertoire_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/repertoir_for_today"
+                        android:textColor="@color/text_white"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/current_screenings"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/round_corners_bottom_8"
+                        android:backgroundTint="@color/text_white"
+                        android:paddingBottom="2dp"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
+                        android:paddingTop="2dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/add_movie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="dodaj film" />
+
+                    <Button
+                        android:id="@+id/add_screening_room"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="dodaj salę kinową" />
+
+                    <Button
+                        android:id="@+id/add_screening_repertoire"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="dodaj film do repertuaru" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <Button
+                android:id="@+id/active_tickets"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+                android:text="@string/my_tickets"
+                android:textSize="16dp" />
+
+            <Button
+                android:id="@+id/browse_movies"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+                android:text="@string/repertoir"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+    </android.widget.LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

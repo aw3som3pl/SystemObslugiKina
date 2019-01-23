@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/round_corners_8"
+        android:backgroundTint="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="Dodaj film do repertuaru"
+        android:textColor="@color/text_white"
+        android:textSize="24dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/date_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/screening_date"
+                    android:layout_alignBottom="@+id/screening_date"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="8dp"
+                    android:text="Data:" />
+
+                <EditText
+                    android:id="@+id/screening_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="26dp"
+                    android:layout_toEndOf="@+id/date_label"
+                    android:background="@drawable/round_corners_15"
+                    android:backgroundTint="@color/light_gray"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Data wyświetlenia"
+                    android:inputType="date"
+                    android:padding="2dp"
+                    android:textColor="@color/dark_blue" />
+
+                <Switch
+                    android:id="@+id/switch1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="8dp"
+                    android:checked="false"
+                    android:splitTrack="false"
+                    android:switchPadding="5dp"
+                    android:text="Premiera"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:background="@drawable/round_corners_8"
+                android:backgroundTint="@color/text_white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/label2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimaryDark"
+                        android:padding="2dp"
+                        android:text="Wybierz film:"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_white"
+                        android:textSize="18dp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/movie_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/label3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimaryDark"
+                        android:padding="2dp"
+                        android:text="Wybierz salę kinową:"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_white"
+                        android:textSize="18dp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/screening_hall_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/label4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:gravity="center"
+                        android:padding="2dp"
+                        android:text="Bazowa cena biletu:"
+                        android:textAlignment="gravity"
+                        android:textColor="@color/text_white"
+                        android:textSize="18dp" />
+
+                    <EditText
+                        android:id="@+id/ticket_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="Cena w zł"
+                        android:inputType="number" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:text="Wyjdź"
+            android:textSize="14dp"
+            tools:ignore="SpUsage" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:text="Zapisz"
+            android:textSize="14dp"
+            android:visibility="visible"
+            tools:ignore="SpUsage" />
+
+    </LinearLayout>
+
+</LinearLayout>
