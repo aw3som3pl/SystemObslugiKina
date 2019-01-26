@@ -125,6 +125,54 @@ public abstract class EnumHandler {
             return notPremiere;
     }
 
+    public static double calculateTicketPrice(Context c, double basePrice, String discountType){
+        final double studentFactor = 0.5;
+        final double disabledFactor = 0.2;
+        final double adultFactor = 1;
+        final double childFactor = 0.4;
+
+        if (discountType.equalsIgnoreCase(c.getString(R.string.student)))
+            return basePrice*studentFactor;
+        else if (discountType.equalsIgnoreCase(c.getString(R.string.disabled_person)))
+            return basePrice*disabledFactor;
+        else if (discountType.equalsIgnoreCase(c.getString(R.string.adult)))
+            return basePrice*adultFactor;
+        else
+            return basePrice*childFactor;
+    }
+    public static String parseDiscountType(Context c, int discountType){
+        final int student = 0;
+        final int disabled = 1;
+        final int adult = 2;
+        final int child = 3;
+
+        if (discountType==student)
+            return c.getString(R.string.student);
+        else if (discountType==disabled)
+            return c.getString(R.string.disabled_person);
+        else if (discountType==adult)
+            return c.getString(R.string.adult);
+        else
+            return c.getString(R.string.child);
+    }
+
+
+    public static int encodeDiscountType(Context c, String discountType){
+        final int student = 0;
+        final int disabled = 1;
+        final int adult = 2;
+        final int child = 3;
+
+        if (discountType.equalsIgnoreCase(c.getString(R.string.student)))
+            return student;
+        else if (discountType.equalsIgnoreCase(c.getString(R.string.disabled_person)))
+            return disabled;
+        else if (discountType.equalsIgnoreCase(c.getString(R.string.adult)))
+            return adult;
+        else
+            return child;
+    }
+
     public static String parseDayOfYearToDate(int dayOfYear) {
 
         String sdf = "dd.MM.yyyy";
@@ -147,6 +195,11 @@ public abstract class EnumHandler {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         cal.setTime(sdf.parse(date));// all done
         return cal.get(Calendar.DAY_OF_YEAR);
+    }
+
+    public static String parseRowToString(int row){
+        String[] rowDictionary = {"A","B","C","D","E"};
+        return rowDictionary[row];
     }
 
 

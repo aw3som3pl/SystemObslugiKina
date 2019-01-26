@@ -142,9 +142,15 @@ public class User {
                             for(DataSnapshot ticket : dataSnapshot.child("Tickets").getChildren()){
                                     for (DataSnapshot ticketEntry : ticket.getChildren()) {
                                         activeTicketsList.add(new Ticket(ticketEntry.child("movieDbRef").getValue().toString(),
+                                                ticketEntry.child("movieTitle").getValue().toString(),
+                                                ticketEntry.child("movieStartDate").getValue().toString(),
+                                                ticketEntry.child("movieStartTime").getValue().toString(),
                                                 Integer.parseInt(ticketEntry.child("discountType").getValue().toString()),
+                                                Integer.parseInt(ticketEntry.child("movieTechnology").getValue().toString()),
                                                 ticketEntry.child("seatColumn").getValue().toString(),
-                                                ticketEntry.child("seatRow").getValue().toString()));
+                                                ticketEntry.child("seatRow").getValue().toString(),
+                                                Integer.parseInt(ticketEntry.child("screeningRoomNumber").getValue().toString()),
+                                                ticketEntry.child("ticketPrice").getValue().toString()));
                                 }
                             }
                             if(role== CurrentAppSession.getCustomerLoginCode())      //rozróżnienie roli użytkownika w systemie

@@ -125,7 +125,7 @@ public class SearchRepertoirePresenter {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot screening : dataSnapshot.getChildren()){
-                    Screening newScreening = new Screening(screening.getKey(),
+                    Screening newScreening = new Screening(screening.getRef().toString(),
                             screening.child("movie").getValue().toString(),
                             screening.child("screeningRoom").getValue().toString(),
                             Integer.parseInt(screening.child("screeningTechnology").getValue().toString()),
@@ -161,9 +161,9 @@ public class SearchRepertoirePresenter {
                                 Integer.parseInt(movieData.child("age_rating").getValue().toString()),
                                 movieData.child("description").getValue().toString(),
                                 movieData.child("title").getValue().toString(),
+                                Integer.parseInt(movieData.child("screeningTechnology").getValue().toString()),
                                 Integer.parseInt(movieData.child("duration").getValue().toString()),
                                 Integer.parseInt(movieData.child("language").getValue().toString()),
-                                Integer.parseInt(movieData.child("screeningTechnology").getValue().toString()),
                                 movieData.getKey());
                         moviesBeingScreened.add(newMovieBeingScreened);
                         for(Screening screening : screeningsInRepertoireList){

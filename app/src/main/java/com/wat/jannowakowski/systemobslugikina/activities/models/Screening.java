@@ -1,5 +1,6 @@
 package com.wat.jannowakowski.systemobslugikina.activities.models;
 
+import com.google.firebase.database.DatabaseReference;
 import com.wat.jannowakowski.systemobslugikina.abstractClasses.EnumHandler;
 
 import java.io.Serializable;
