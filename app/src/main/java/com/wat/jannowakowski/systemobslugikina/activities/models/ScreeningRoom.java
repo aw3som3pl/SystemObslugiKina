@@ -1,10 +1,12 @@
 package com.wat.jannowakowski.systemobslugikina.activities.models;
 
+import java.io.Serializable;
+
 /**
  * Created by Jan Nowakowski on 24.11.2018.
  */
 
-public class ScreeningRoom {
+public class ScreeningRoom implements Serializable{
 
 
     private String screeningRoomDbRef;

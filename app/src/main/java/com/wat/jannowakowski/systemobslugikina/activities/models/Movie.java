@@ -2,14 +2,16 @@ package com.wat.jannowakowski.systemobslugikina.activities.models;
 
 import android.graphics.drawable.Drawable;
 
+import java.io.Serializable;
+
 /**
  * Created by Jan Nowakowski on 24.11.2018.
  */
 
-public class Movie {
+public class Movie implements Serializable{
 
     private String movieDbRef;
-    private Drawable thumbnail;
+    private transient Drawable thumbnail;
     private String rawThumbnail;
     private int ageRating;
     private String description;

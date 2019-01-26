@@ -2,6 +2,7 @@ package com.wat.jannowakowski.systemobslugikina.activities.views;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -154,6 +155,13 @@ public class SearchRepertoire extends AppCompatActivity implements SearchReperto
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
+    }
+
+    @Override
+    public void navigateToBuyTickets(Screening screening){
+        Intent intent = new Intent(SearchRepertoire.this, BuyTickets.class);
+        intent.putExtra("Screening",screening);
+        startActivity(intent);
     }
 
     @Override

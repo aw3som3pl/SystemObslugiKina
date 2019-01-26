@@ -1,6 +1,7 @@
 package com.wat.jannowakowski.systemobslugikina.activities.presenters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -26,6 +27,7 @@ import com.wat.jannowakowski.systemobslugikina.activities.models.Movie;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Repertoir;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Screening;
 import com.wat.jannowakowski.systemobslugikina.activities.models.ScreeningRoom;
+import com.wat.jannowakowski.systemobslugikina.activities.views.BuyTickets;
 import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 import com.wat.jannowakowski.systemobslugikina.interfaces.OnSelectedMoviesDataReload;
 import com.wat.jannowakowski.systemobslugikina.interfaces.OnScreeningRoomsDataReload;
@@ -218,7 +220,7 @@ public class CustomerMenuPresenter {
     public void showMovieDetailsPopup(int screeningIndex, CoordinatorLayout popupContainer, LayoutInflater inflater){
         final android.view.View popupView = inflater.inflate(R.layout.movie_info_popup, null);
 
-        Screening thisScreening = screeningsInRepertoire.get(screeningIndex);
+        final Screening thisScreening = screeningsInRepertoire.get(screeningIndex);
 
         // create the popup window
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -250,7 +252,8 @@ public class CustomerMenuPresenter {
         buyTickets.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
-
+                view.navigateToBuyTickets(thisScreening);
+                popupWindow.dismiss();
             }
         });
 
@@ -284,6 +287,8 @@ public class CustomerMenuPresenter {
         void navigateToLogin();
 
         void navigateToSearch();
+
+        void navigateToBuyTickets(Screening screening);
 
         void showLoadingIndicator();
         void hideLoadingIndicator();

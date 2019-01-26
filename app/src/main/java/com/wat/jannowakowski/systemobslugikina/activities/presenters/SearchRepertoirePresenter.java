@@ -217,7 +217,7 @@ public class SearchRepertoirePresenter {
     public void showMovieDetailsPopup(int screeningIndex, CoordinatorLayout popupContainer, LayoutInflater inflater){
         final android.view.View popupView = inflater.inflate(R.layout.movie_info_popup, null);
 
-        Screening thisScreening = screeningsInRepertoire.get(screeningIndex);
+        final Screening thisScreening = screeningsInRepertoire.get(screeningIndex);
 
         // create the popup window
         int width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -249,7 +249,8 @@ public class SearchRepertoirePresenter {
         buyTickets.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
-
+                view.navigateToBuyTickets(thisScreening);
+                popupWindow.dismiss();
             }
         });
 
@@ -273,6 +274,8 @@ public class SearchRepertoirePresenter {
 
 
     public interface View{
+        void navigateToBuyTickets(Screening screening);
+
         void navigateToCustomerMenu();
         void showLoadingIndicator();
         void hideLoadingIndicator();

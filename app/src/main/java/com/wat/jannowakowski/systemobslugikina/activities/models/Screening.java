@@ -2,11 +2,13 @@ package com.wat.jannowakowski.systemobslugikina.activities.models;
 
 import com.wat.jannowakowski.systemobslugikina.abstractClasses.EnumHandler;
 
+import java.io.Serializable;
+
 /**
  * Created by Jan Nowakowski on 24.11.2018.
  */
 
-public class Screening {
+public class Screening implements Serializable {
 
     private String screeningDbRef;
     private String movieDbRef;

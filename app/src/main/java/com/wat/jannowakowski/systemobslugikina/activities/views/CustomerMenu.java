@@ -147,6 +147,13 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         startActivity(new Intent(CustomerMenu.this, SearchRepertoire.class));
     }
 
+    @Override
+    public void navigateToBuyTickets(Screening screening){
+        Intent intent = new Intent(CustomerMenu.this, BuyTickets.class);
+        intent.putExtra("Screening",screening);
+        startActivity(intent);
+    }
+
 
     @Override
     public void showLoadingIndicator() {
