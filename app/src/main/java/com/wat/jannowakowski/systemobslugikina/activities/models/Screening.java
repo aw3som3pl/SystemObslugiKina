@@ -15,8 +15,7 @@ public class Screening {
     private int takenSeats;
     private int screeningTechnology;
     private ScreeningRoom screeningRoom;
-    private String shortDescription;
-    private long baseTicketPrice;
+    private double baseTicketPrice;
     private String dateOfScreening;
     private String timeOfScreening;
     private boolean isPremiere;
@@ -77,19 +76,11 @@ public class Screening {
         this.screeningRoom = screeningRoom;
     }
 
-    public String getShortDescription() {
-        return shortDescription;
-    }
-
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public long getBaseTicketPrice() {
+    public double getBaseTicketPrice() {
         return baseTicketPrice;
     }
 
-    public void setBaseTicketPrice(long baseTicketPrice) {
+    public void setBaseTicketPrice(double baseTicketPrice) {
         this.baseTicketPrice = baseTicketPrice;
     }
 
@@ -118,14 +109,20 @@ public class Screening {
     }
 
 
-    public Screening(String screeningDbRef,String movieDbRef,String screeningRoomDbRef,int screeningTechnology, int takenSeats, String shortDescription, long baseTicketPrice, String dateOfScreening, String timeOfScreening, int isPremiere) {
+    public Screening(double baseTicketPrice, String dateOfScreening, String timeOfScreening, int isPremiere) {
+
+        this.baseTicketPrice = baseTicketPrice;
+        this.dateOfScreening = dateOfScreening;
+        this.timeOfScreening = timeOfScreening;
+        this.isPremiere = EnumHandler.parsePremiereFlagState(isPremiere);
+        movie = null;
+    }
+    public Screening(String screeningDbRef,String movieDbRef,String screeningRoomDbRef,int screeningTechnology, double baseTicketPrice, String dateOfScreening, String timeOfScreening, int isPremiere) {
 
         this.screeningRoomDbRef = screeningRoomDbRef;
         this.screeningDbRef = screeningDbRef;
         this.movieDbRef = movieDbRef;
-        this.takenSeats = takenSeats;
         this.screeningTechnology = screeningTechnology;
-        this.shortDescription = shortDescription;
         this.baseTicketPrice = baseTicketPrice;
         this.dateOfScreening = dateOfScreening;
         this.timeOfScreening = timeOfScreening;

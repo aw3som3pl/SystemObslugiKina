@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.wat.jannowakowski.systemobslugikina.activities.views.CustomerMenu">
@@ -36,115 +37,144 @@
             android:textSize="24dp" />
     </RelativeLayout>
 
-    <android.widget.LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    app:layout_anchorGravity="bottom">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/round_corners_8"
-        android:backgroundTint="@color/colorPrimaryDark"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/repertoire_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/repertoir_for_today"
-            android:textColor="@color/text_white"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/current_screenings"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/round_corners_bottom_8"
-            android:backgroundTint="@color/text_white"
-            android:paddingBottom="2dp"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
-            android:paddingTop="2dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="1"
-        android:background="@drawable/round_corners_8"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/special_offer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/special_offer"
-            android:textColor="@color/text_white"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/offer" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        android:padding="5dp">
-
-        <Button
-            android:id="@+id/active_tickets"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        <android.widget.LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
-            android:text="@string/my_tickets"
-            android:textSize="16dp" />
+            android:fitsSystemWindows="true"
+            android:orientation="vertical"
+            app:layout_anchorGravity="bottom">
 
-        <Button
-            android:id="@+id/browse_movies"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+
+            <LinearLayout
+                android:id="@+id/refresh_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <ImageButton
+                    android:id="@+id/refresh"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_corners_bottom_8"
+                    android:backgroundTint="@color/light_green"
+                    app:srcCompat="@drawable/outline_refresh_white_48dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/round_corners_8"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/repertoire_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/repertoir_for_today"
+                    android:textColor="@color/text_white"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/current_screenings"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/round_corners_bottom_8"
+                    android:backgroundTint="@color/text_white"
+                    android:paddingBottom="2dp"
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="2dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_corners_8"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/special_offer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/special_offer"
+                    android:textColor="@color/text_white"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/offer" />
+
+            </LinearLayout>
+
+        </android.widget.LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
-            android:text="@string/repertoir"
-            android:textSize="16dp" />
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <Button
+                android:id="@+id/active_tickets"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+                android:text="@string/my_tickets"
+                android:textSize="16dp" />
+
+            <Button
+                android:id="@+id/browse_movies"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+                android:text="@string/repertoir"
+                android:textSize="16dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</android.widget.LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

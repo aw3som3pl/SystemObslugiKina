@@ -2,33 +2,46 @@ package com.wat.jannowakowski.systemobslugikina.activities.views;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.wat.jannowakowski.systemobslugikina.R;
+import com.wat.jannowakowski.systemobslugikina.abstractClasses.EnumHandler;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Screening;
 import com.wat.jannowakowski.systemobslugikina.activities.presenters.CustomerMenuPresenter;
 import com.wat.jannowakowski.systemobslugikina.adapters.RepertoirListAdapter;
 import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CustomerMenu extends AppCompatActivity implements CustomerMenuPresenter.View {
 
     private Activity thisActivity;
 
     private CustomerMenuPresenter presenter;
+    private CoordinatorLayout mainLayout;
+    private LayoutInflater inflater;
+
     private RelativeLayout loadingOverlayLayout;
     private Button showUserTicketsBtn, showRepertoirBtn;
+    private ImageButton refreshBtn;
     private RecyclerView currentScreeningsList;
     private RecyclerView.Adapter repertoireAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -40,8 +53,9 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_menu);
 
+        mainLayout = findViewById(R.id.main_layout);
         loadingOverlayLayout = findViewById(R.id.loading_in_progress);
-
+        refreshBtn = findViewById(R.id.refresh);
         showUserTicketsBtn = findViewById(R.id.active_tickets);
         showRepertoirBtn = findViewById(R.id.browse_movies);
         currentScreeningsList = findViewById(R.id.current_screenings);
@@ -49,6 +63,8 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         currentScreeningsList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(thisActivity);
         currentScreeningsList.setLayoutManager(mLayoutManager);
+
+        inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
         thisActivity = this;
 
@@ -58,11 +74,40 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
 
         presenter.setCustomerMenuActivityRef(thisActivity);
 
-        presenter.reloadCurrentRepertoire();
+        refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.reloadCurrentRepertoire();
+            }
+        });
 
+        showRepertoirBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToSearch();
+            }
+        });
 
+        showUserTicketsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        presenter.reloadCurrentRepertoire();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,15 +143,23 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
     }
 
     @Override
+    public void navigateToSearch(){
+        startActivity(new Intent(CustomerMenu.this, SearchRepertoire.class));
+    }
+
+
+    @Override
     public void showLoadingIndicator() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         loadingOverlayLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoadingIndicator() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         loadingOverlayLayout.setVisibility(View.GONE);
     }
-
 
     @Override
     public void setScreeningsRecyclerViewAdapter(ArrayList<Screening> screeningsList){
@@ -114,7 +167,7 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         mRepertoirListListener = new RepertoirListAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(CustomerMenu.this, "Click "+ position, Toast.LENGTH_LONG).show();
+                presenter.showMovieDetailsPopup(position,mainLayout,inflater);
             }
         };
 
@@ -122,8 +175,6 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         currentScreeningsList.setAdapter(repertoireAdapter);
 
         hideLoadingIndicator();
-
-
 
     }
 

@@ -143,7 +143,7 @@ public class User {
                                     for (DataSnapshot ticketEntry : ticket.getChildren()) {
                                         activeTicketsList.add(new Ticket(ticketEntry.child("movieDbRef").getValue().toString(),
                                                 Integer.parseInt(ticketEntry.child("discountType").getValue().toString()),
-                                                ticketEntry.child("seatCollumn").getValue().toString(),
+                                                ticketEntry.child("seatColumn").getValue().toString(),
                                                 ticketEntry.child("seatRow").getValue().toString()));
                                 }
                             }

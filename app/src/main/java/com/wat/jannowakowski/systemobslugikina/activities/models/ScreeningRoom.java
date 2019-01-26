@@ -6,11 +6,19 @@ package com.wat.jannowakowski.systemobslugikina.activities.models;
 
 public class ScreeningRoom {
 
+
+    private String screeningRoomDbRef;
     private int maxSeatCount;
     private int projectionTechnology;
     private int referenceNumber;
-    private int status;
 
+    public String getScreeningRoomDbRef() {
+        return screeningRoomDbRef;
+    }
+
+    public void setScreeningRoomDbRef(String screeningRoomDbRef) {
+        this.screeningRoomDbRef = screeningRoomDbRef;
+    }
 
     public int getMaxSeatCount() {
         return maxSeatCount;
@@ -36,20 +44,19 @@ public class ScreeningRoom {
         this.referenceNumber = referenceNumber;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 
 
-    public ScreeningRoom(int maxSeatCount, int projectionTechnology, int referenceNumber, int status) {
+    public ScreeningRoom(int maxSeatCount, int projectionTechnology, int referenceNumber, String screeningRoomDbRef) {
         this.maxSeatCount = maxSeatCount;
         this.projectionTechnology = projectionTechnology;
         this.referenceNumber = referenceNumber;
-        this.status = status;
+        this.screeningRoomDbRef = screeningRoomDbRef;
+    }
+
+    public ScreeningRoom(int maxSeatCount, int projectionTechnology, int referenceNumber) {
+        this.maxSeatCount = maxSeatCount;
+        this.projectionTechnology = projectionTechnology;
+        this.referenceNumber = referenceNumber;
     }
 
 }

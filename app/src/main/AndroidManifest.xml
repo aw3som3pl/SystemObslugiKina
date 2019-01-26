@@ -28,16 +28,19 @@
         <activity
             android:name=".activities.views.CustomerMenu"
             android:label="@string/logged_in_customer" />
-        <activity android:name=".activities.views.StaffMenu"
-            android:label="@string/logged_in_staff"/>
-        <activity android:name=".activities.views.SearchMovies" />
+        <activity
+            android:name=".activities.views.StaffMenu"
+            android:label="@string/logged_in_staff" />
         <activity
             android:name=".activities.views.Signup"
             android:label="@string/signup_activity_title" />
         <activity
             android:name=".activities.views.UserTickets"
-            android:label="@string/user_tickets_title"></activity>
-        <activity android:name=".activities.views.SearchRepertoire"></activity>
+            android:label="@string/user_tickets_title" />
+        <activity android:name=".activities.views.SearchRepertoire" />
+        <activity android:name=".activities.views.BuyTickets" />
+        <activity android:name=".activities.views.AddMovieToRepertoire"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>
