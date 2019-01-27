@@ -101,6 +101,7 @@ public class BuyTicketsPresenter {
             }
             tempTicketList.clear();
             view.clearTempTicketsContainer();
+            view.showToastMsg("Pomyślnie zakupiono bilety!");
         }else
             view.showToastMsg("Brak biletów w koszyku");
     }

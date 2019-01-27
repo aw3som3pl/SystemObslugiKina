@@ -150,6 +150,12 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/scan_tickets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Skanuj bilety" />
+
+            <Button
                 android:id="@+id/add_movie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

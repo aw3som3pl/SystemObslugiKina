@@ -289,6 +289,8 @@ public class CustomerMenuPresenter {
     }
 
     public interface View{
+        void navigateToUserTickets();
+
         void navigateToLogin();
 
         void navigateToSearch();

@@ -266,6 +266,7 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
             unlockNewTicketButton();
         else {
             lockNewTicketButton();
+            hideNewTicketForm();
         }
     }
 

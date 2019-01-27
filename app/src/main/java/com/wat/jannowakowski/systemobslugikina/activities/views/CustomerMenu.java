@@ -93,7 +93,7 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         showUserTicketsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                navigateToUserTickets();
             }
         });
 
@@ -137,6 +137,12 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         super.onDestroy();
 
     }
+
+    @Override
+    public void navigateToUserTickets(){
+        startActivity(new Intent(CustomerMenu.this, UserTickets.class));
+    }
+
 
     @Override
     public void navigateToLogin() {

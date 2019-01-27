@@ -1,10 +1,15 @@
 package com.wat.jannowakowski.systemobslugikina.activities.views;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,10 +42,10 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
 
 
     private Activity thisActivity;
-
+    private static final int MY_CAMERA_REQUEST_CODE = 100;
     private StaffMenuPresenter presenter;
     private RelativeLayout loadingOverlayLayout;
-    private Button addNewMovieBtn, addNewScreeningRoomBtn, addNewDiscountCathegory, addNewScreeningToRepertoireBtn, navigateToSearchBtn;
+    private Button addNewMovieBtn, addNewScreeningRoomBtn, addNewDiscountCathegory, addNewScreeningToRepertoireBtn, navigateToSearchBtn, scanTicketsBtn;
     private LinearLayout refreshBtn;
     private RecyclerView currentScreeningsList;
     private RecyclerView.Adapter repertoireAdapter;
@@ -67,6 +72,12 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
             }
         }
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+                    MY_CAMERA_REQUEST_CODE);
+        }
+
         loadingOverlayLayout = findViewById(R.id.loading_in_progress);
 
         mainLayout = findViewById(R.id.staff_main_layout);
@@ -75,6 +86,7 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
         addNewScreeningRoomBtn = findViewById(R.id.add_screening_room);
         addNewDiscountCathegory = findViewById(R.id.add_discount_cathegory);
         addNewScreeningToRepertoireBtn = findViewById(R.id.add_screening_repertoire);
+        scanTicketsBtn = findViewById(R.id.scan_tickets);
         navigateToSearchBtn = findViewById(R.id.search_repertoire);
         currentScreeningsList = findViewById(R.id.current_screenings);
         screeningsDataMissing = findViewById(R.id.no_data_notifier);
@@ -94,6 +106,13 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
         presenter.setStaffMenuActivityRef(thisActivity);
 
         presenter.reloadCurrentRepertoire();
+
+        scanTicketsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToScan();
+            }
+        });
 
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +172,25 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+
+            } else {
+
+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+
+            }
+
+        }}//end onRequestPermissionsResult
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -185,6 +223,11 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
     public void navigateToLogin() {
         startActivity(new Intent(StaffMenu.this, Login.class));
         finish();
+    }
+
+    @Override
+    public void navigateToScan() {
+        startActivity(new Intent(StaffMenu.this, TicketChecker.class));
     }
 
     @Override

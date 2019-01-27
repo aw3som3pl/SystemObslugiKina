@@ -39,8 +39,10 @@
             android:label="@string/user_tickets_title" />
         <activity android:name=".activities.views.SearchRepertoire" />
         <activity android:name=".activities.views.BuyTickets" />
-        <activity android:name=".activities.views.AddMovieToRepertoire"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".activities.views.AddMovieToRepertoire"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activities.views.TicketChecker"></activity>
     </application>
 
 </manifest>

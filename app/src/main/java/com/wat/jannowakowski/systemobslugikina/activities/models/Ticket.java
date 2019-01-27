@@ -102,6 +102,15 @@ public class Ticket {
         this.ticketDbUrl = ticketDbUrl;
     }
 
+    public String getTicketRedeemedDate() {
+        return ticketRedeemedDate;
+    }
+
+    public void setTicketRedeemedDate(String ticketRedeemedDate) {
+        this.ticketRedeemedDate = ticketRedeemedDate;
+    }
+
+    private String ticketRedeemedDate;
     private String ticketDbUrl;
     private String ticketOwner;
     private String movieTitle;
@@ -130,6 +139,21 @@ public class Ticket {
     }
 
     public Ticket(String ticketDbUrl, String movieDbRef, String movieTitle, String movieStartDate, String movieStartTime,String discountType, int movieTechnology, String seatCollumn, String seatRow, int screeningRoomNumber, String ticketPrice) {
+        this.ticketDbUrl = ticketDbUrl;
+        this.discountType = discountType;
+        this.movieTechnology = movieTechnology;
+        this.movieTitle = movieTitle;
+        this.movieStartDate = movieStartDate;
+        this.movieStartTime = movieStartTime;
+        this.movieDbRef = movieDbRef;
+        this.seatCollumn = seatCollumn;
+        this.screeningRoomNumber = screeningRoomNumber;
+        this.seatRow = seatRow;
+        this.ticketPrice = ticketPrice;
+    }
+
+    public Ticket(String ticketRedeemedDate, String ticketDbUrl, String movieDbRef, String movieTitle, String movieStartDate, String movieStartTime,String discountType, int movieTechnology, String seatCollumn, String seatRow, int screeningRoomNumber, String ticketPrice) {
+        this.ticketRedeemedDate = ticketRedeemedDate;
         this.ticketDbUrl = ticketDbUrl;
         this.discountType = discountType;
         this.movieTechnology = movieTechnology;

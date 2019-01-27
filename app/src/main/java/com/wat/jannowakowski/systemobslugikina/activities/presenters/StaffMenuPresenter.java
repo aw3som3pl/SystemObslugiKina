@@ -700,6 +700,8 @@ public class StaffMenuPresenter {
     }
 
     public interface View{
+        void navigateToScan();
+
         void navigateToSearch();
 
         void showScreeningsDataMissing();
