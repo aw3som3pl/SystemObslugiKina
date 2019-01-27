@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +35,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.wat.jannowakowski.systemobslugikina.R;
 import com.wat.jannowakowski.systemobslugikina.abstractClasses.EnumHandler;
+import com.wat.jannowakowski.systemobslugikina.activities.models.Discount;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Movie;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Repertoir;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Screening;
@@ -121,8 +123,13 @@ public class StaffMenuPresenter {
         setOnScreeningRoomsDataReloadedListener(new OnScreeningRoomsDataReload() {  //czekamy na załadowanie sal kinowych wyświetlanych filmów w repertuarze
             @Override
             public void OnScreeningRoomsDataReloaded(boolean state) {
-                if (state)
+                if (state) {
+                    if (screeningsInRepertoire.size() == 0)
+                        view.showScreeningsDataMissing();
+                    else
+                        view.hideScreeningsDataMissing();
                     view.setScreeningsRecyclerViewAdapter(screeningsInRepertoire);
+                }
             }
         });
 
@@ -402,6 +409,65 @@ public class StaffMenuPresenter {
 
     }
 
+    public void showAddDiscountCathegoryPopupWindow(CoordinatorLayout popupContainer, LayoutInflater inflater) {
+
+        // get a reference to the already created main layout
+
+        // inflate the layout of the popup window
+        final android.view.View popupView = inflater.inflate(R.layout.add_discount_cathegory, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        final LinearLayout sendingInProgressLayout = popupView.findViewById(R.id.sending_layout);
+
+        final Button saveBtn = popupView.findViewById(R.id.save_button);
+        Button cancelBtn = popupView.findViewById(R.id.close_button);
+
+        final EditText discountCathegoryName = popupView.findViewById(R.id.display_name);
+        final EditText discountCathegoryModifier = popupView.findViewById(R.id.discount_modifier);
+
+        saveBtn.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+
+                try {
+                    saveBtn.setEnabled(false);
+                    sendingInProgressLayout.setVisibility(android.view.View.VISIBLE);
+
+                    sendDiscountCathegoryData(new Discount(Double.parseDouble(discountCathegoryModifier.getText().toString()),discountCathegoryName.getText().toString()),popupWindow);
+                } catch (NullPointerException e){
+                    sendingInProgressLayout.setVisibility(android.view.View.GONE);
+                    saveBtn.setEnabled(true);
+                    view.showToastMsg("Błąd wejścia: " +e.getMessage());
+                    e.printStackTrace();
+                } catch (NumberFormatException n){
+                    sendingInProgressLayout.setVisibility(android.view.View.GONE);
+                    saveBtn.setEnabled(true);
+                    view.showToastMsg("Błąd wejścia: " +n.getMessage());
+                    n.printStackTrace();
+                }
+            }
+        });
+
+        cancelBtn.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+
+        // show the popup window
+        popupWindow.showAtLocation(popupContainer, Gravity.CENTER, 0, 0);
+        dimBehind(popupWindow);
+
+
+    }
+
 
     private void sendMovieData(Movie movie, final PopupWindow source){
 
@@ -438,6 +504,20 @@ public class StaffMenuPresenter {
         });
 
 
+    }
+
+    private void sendDiscountCathegoryData(Discount discount, final PopupWindow source){
+
+        final DatabaseReference newScreeningRoomDbRef = mDatabase.child("CustomerCathegories").push();
+
+        newScreeningRoomDbRef.child("discountModifier").setValue(discount.getDiscountModifier());
+        newScreeningRoomDbRef.child("displayName").setValue(discount.getDiscountName()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                source.dismiss();
+                view.showToastMsg("Dodano kategorię wiekową: " + newScreeningRoomDbRef.getKey());
+            }
+        });
     }
 
     public void showMovieDetailsPopup(int screeningIndex, CoordinatorLayout popupContainer, LayoutInflater inflater){
@@ -621,6 +701,10 @@ public class StaffMenuPresenter {
 
     public interface View{
         void navigateToSearch();
+
+        void showScreeningsDataMissing();
+
+        void hideScreeningsDataMissing();
 
         void showToastMsg(String msg);
         void navigateToLogin();

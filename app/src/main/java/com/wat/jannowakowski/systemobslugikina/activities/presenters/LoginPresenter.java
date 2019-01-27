@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wat.jannowakowski.systemobslugikina.R;
 import com.wat.jannowakowski.systemobslugikina.activities.models.User;
+import com.wat.jannowakowski.systemobslugikina.activities.views.Login;
 import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 import com.wat.jannowakowski.systemobslugikina.global.InternetConnectionListener;
 import com.wat.jannowakowski.systemobslugikina.interfaces.OnUserDataReload;
@@ -28,6 +29,8 @@ import com.wat.jannowakowski.systemobslugikina.interfaces.OnVersionCheck;
 
 
 public class LoginPresenter {
+
+    private Activity loginActivityRef;
 
     private FirebaseAuth auth;
     private DatabaseReference versionControlDbNodeRef;
@@ -39,14 +42,15 @@ public class LoginPresenter {
 
     private User user;
 
-    public LoginPresenter(View v) {
+    public LoginPresenter(View v,Activity loginActivity) {
         this.view = v;
+        this.loginActivityRef = loginActivity;
 
-
+        auth = FirebaseAuth.getInstance();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         versionControlDbNodeRef = mDatabase.child("VersionControll");
         DatabaseReference users_node_ref = mDatabase.child("Users");
-        auth = FirebaseAuth.getInstance();
+
 
         CurrentAppSession.getINSTANCE().setCurrentUserAuth(auth);
 
@@ -66,6 +70,8 @@ public class LoginPresenter {
                 }
             }
         });
+
+        checkVersionCoherence(getCurrentVersionCode(loginActivityRef));
 
     }
 

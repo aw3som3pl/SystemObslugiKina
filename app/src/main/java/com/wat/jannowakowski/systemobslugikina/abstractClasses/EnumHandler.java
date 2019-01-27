@@ -125,20 +125,8 @@ public abstract class EnumHandler {
             return notPremiere;
     }
 
-    public static double calculateTicketPrice(Context c, double basePrice, String discountType){
-        final double studentFactor = 0.5;
-        final double disabledFactor = 0.2;
-        final double adultFactor = 1;
-        final double childFactor = 0.4;
-
-        if (discountType.equalsIgnoreCase(c.getString(R.string.student)))
-            return basePrice*studentFactor;
-        else if (discountType.equalsIgnoreCase(c.getString(R.string.disabled_person)))
-            return basePrice*disabledFactor;
-        else if (discountType.equalsIgnoreCase(c.getString(R.string.adult)))
-            return basePrice*adultFactor;
-        else
-            return basePrice*childFactor;
+    public static double calculateTicketPrice(double basePrice, double discount){
+            return basePrice*discount;
     }
     public static String parseDiscountType(Context c, int discountType){
         final int student = 0;

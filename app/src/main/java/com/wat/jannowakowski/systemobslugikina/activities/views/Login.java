@@ -44,8 +44,7 @@ public class Login extends AppCompatActivity implements LoginPresenter.View {
         CurrentAppSession.getINSTANCE();        //inicjalizacja singletona odpowiedzialnego za przetrzymywanie informacji o sesji aplikacji
 
         thisActivity = this;
-        presenter = new LoginPresenter(this);
-        checkVersion();
+        presenter = new LoginPresenter(this,thisActivity);
 
         mainLayout = findViewById(R.id.main_layout);
         email = findViewById(R.id.email);

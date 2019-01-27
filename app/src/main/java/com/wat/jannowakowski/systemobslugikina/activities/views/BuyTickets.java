@@ -15,12 +15,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wat.jannowakowski.systemobslugikina.R;
 import com.wat.jannowakowski.systemobslugikina.abstractClasses.EnumHandler;
+import com.wat.jannowakowski.systemobslugikina.activities.models.Discount;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Screening;
 import com.wat.jannowakowski.systemobslugikina.activities.models.Ticket;
 import com.wat.jannowakowski.systemobslugikina.activities.presenters.BuyTicketsPresenter;
+import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
 
 import org.w3c.dom.Text;
 
@@ -57,6 +60,7 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
     private LinearLayout tempTicketsContainer;
 
     private Button confirmAndBuy;
+    private Button backBtn;
 
     private String tempTicketDiscount;
 
@@ -93,7 +97,10 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
         tempTicketsLayout = findViewById(R.id.fill_tickets_layout);
         tempTicketsContainer = findViewById(R.id.tickets_container);
         confirmAndBuy = findViewById(R.id.buy_button);
+        backBtn = findViewById(R.id.close_button);
 
+
+        presenter.populateCustomerDiscountsOptions(discountRadioGroup, CurrentAppSession.getINSTANCE().getDiscountsCathegoriesList());
 
         if(thisScreening.isPremiere())
             premiereIcon.setVisibility(View.VISIBLE);
@@ -108,8 +115,6 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
         ticketPrice.setText(String.valueOf(thisScreening.getBaseTicketPrice()));
 
         presenter.startSeatWatcher(thisScreening);
-
-        tempTicketDiscount = getResources().getString(R.string.adult);
 
         if(presenter.checkTicketAvailability())
             unlockNewTicketButton();
@@ -135,7 +140,7 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
                             thisScreening.getMovie().getTitle(),
                             thisScreening.getDateOfScreening(),
                             thisScreening.getTimeOfScreening(),
-                            EnumHandler.encodeDiscountType(thisActivity, tempTicketDiscount),
+                            presenter.tempTicketDiscountType,
                             thisScreening.getScreeningTechnology(),
                             presenter.chosenSeatCol,
                             presenter.chosenSeatRow,
@@ -156,6 +161,7 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
             @Override
             public void onClick(View v) {
                 hideNewTicketForm();
+                checkSeatAvailability();
             }
         });
 
@@ -163,8 +169,9 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton tempRB = findViewById(checkedId);
-                tempTicketDiscount = tempRB.getText().toString();
-                ticketPrice.setText(String.format("%.2f",EnumHandler.calculateTicketPrice(thisActivity,thisScreening.getBaseTicketPrice(),tempTicketDiscount))+" zł");
+                Discount discount = CurrentAppSession.getINSTANCE().getDiscountsCathegoriesList().get(discountRadioGroup.indexOfChild(tempRB));
+                presenter.tempTicketDiscountType = discount.getDiscountName();
+                ticketPrice.setText(String.format("%.2f",EnumHandler.calculateTicketPrice(thisScreening.getBaseTicketPrice(),discount.getDiscountModifier()))+" zł");
             }
         });
 
@@ -172,12 +179,8 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 presenter.chosenSeatRow = EnumHandler.parseRowToString(position);
-                if(presenter.checkTicketAvailability())
-                    unlockNewTicketButton();
-                else {
-                    lockNewTicketButton();
-                    hideNewTicketForm();
-                }
+                checkSeatAvailability();
+
             }
 
             @Override
@@ -190,12 +193,7 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 presenter.chosenSeatCol = String.valueOf(position+1);
-                if(presenter.checkTicketAvailability())
-                    unlockNewTicketButton();
-                else {
-                    lockNewTicketButton();
-                    hideNewTicketForm();
-                }
+                checkSeatAvailability();
             }
 
             @Override
@@ -212,6 +210,14 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
             }
         });
 
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.clearTempTickets();
+                onBackPressed();
+            }
+        });
+
     }
 
     @Override
@@ -221,10 +227,11 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
     }
 
 
-    public void addTempTicketToContainer(Ticket ticket){
+    public void addTempTicketToContainer(final Ticket ticket){
         LayoutInflater inflater = getLayoutInflater();
         final View ticketEntryNode = inflater.inflate(R.layout.ticket_show_node,tempTicketsContainer, false);
 
+        Button remove_temp_ticket = ticketEntryNode.findViewById(R.id.remove_temp_ticket);
         TextView movieTime = ticketEntryNode.findViewById(R.id.movie_time);
         TextView movieTitle = ticketEntryNode.findViewById(R.id.movie_title);
         TextView movieTechnology = ticketEntryNode.findViewById(R.id.movie_screening_technology);
@@ -233,15 +240,38 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
         TextView movieScreeningRoomNumber = ticketEntryNode.findViewById(R.id.movie_screening_room);
         TextView movieDiscountType = ticketEntryNode.findViewById(R.id.ticket_discount);
 
+        remove_temp_ticket.setVisibility(View.VISIBLE);
         movieTime.setText(ticket.getMovieStartTime());
         movieDate.setText(ticket.getMovieStartDate());
         movieTitle.setText(ticket.getMovieTitle());
         movieTechnology.setText(EnumHandler.parseScreeningTechnology(thisActivity,ticket.getMovieTechnology()));
         movieSeat.setText(ticket.getSeatRow()+ticket.getSeatCollumn());
         movieScreeningRoomNumber.setText(String.valueOf(ticket.getScreeningRoomNumber()));
-        movieDiscountType.setText(EnumHandler.parseDiscountType(thisActivity,ticket.getDiscountType()));
+        movieDiscountType.setText(ticket.getDiscountType());
 
         tempTicketsContainer.addView(ticketEntryNode);
+
+        remove_temp_ticket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.cancelTempTicket(ticket);
+                tempTicketsContainer.removeView(ticketEntryNode);
+            }
+        });
+    }
+
+    @Override
+    public void checkSeatAvailability(){
+        if(presenter.checkTicketAvailability())
+            unlockNewTicketButton();
+        else {
+            lockNewTicketButton();
+        }
+    }
+
+    @Override
+    public void clearTempTicketsContainer(){
+        tempTicketsContainer.removeAllViews();
     }
 
     @Override
@@ -259,6 +289,7 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
     @Override
     public void showNewTicketForm(){
         ticketAvailableForm.setVisibility(View.VISIBLE);
+        reserveTicketButton.setEnabled(false);
     }
 
     @Override
@@ -269,6 +300,7 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
     @Override
     public void showTempTicketsList(){
         tempTicketsLayout.setVisibility(View.VISIBLE);
+        reserveTicketButton.setEnabled(false);
     }
 
     @Override
@@ -278,12 +310,17 @@ public class BuyTickets extends AppCompatActivity implements BuyTicketsPresenter
 
     @Override
     public void showToastMsg(String msg) {
-
+        Toast.makeText(thisActivity, msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void navigateBack() {
         presenter.stopSeatWatcher();
+        presenter.clearTempTickets();
 
+    }
+    @Override
+    public void preformBackAction() {
+        onBackPressed();
     }
 }

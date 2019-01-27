@@ -46,7 +46,7 @@ public class SearchRepertoire extends AppCompatActivity implements SearchReperto
 
     private RecyclerView currentScreeningsList;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private TextView screeningsDataMissing;
     private RepertoirListAdapter.RecyclerViewClickListener mRepertoirListListener = null;
 
     private Calendar currentSearchDate;
@@ -65,7 +65,7 @@ public class SearchRepertoire extends AppCompatActivity implements SearchReperto
         currentScreeningsList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(thisActivity);
         currentScreeningsList.setLayoutManager(mLayoutManager);
-
+        screeningsDataMissing = findViewById(R.id.no_data_notifier);
         dateField = findViewById(R.id.date_field);
         refreshBtn = findViewById(R.id.refresh);
         backBtn = findViewById(R.id.close_button);
@@ -167,6 +167,16 @@ public class SearchRepertoire extends AppCompatActivity implements SearchReperto
     @Override
     public void navigateToCustomerMenu() {
         onBackPressed();
+    }
+
+    @Override
+    public void showScreeningsDataMissing(){
+        screeningsDataMissing.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideScreeningsDataMissing(){
+        screeningsDataMissing.setVisibility(View.GONE);
     }
 
     @Override

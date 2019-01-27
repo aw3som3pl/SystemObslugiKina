@@ -17,7 +17,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wat.jannowakowski.systemobslugikina.R;
@@ -25,6 +27,8 @@ import com.wat.jannowakowski.systemobslugikina.activities.models.Screening;
 import com.wat.jannowakowski.systemobslugikina.activities.presenters.StaffMenuPresenter;
 import com.wat.jannowakowski.systemobslugikina.adapters.RepertoirListAdapter;
 import com.wat.jannowakowski.systemobslugikina.global.CurrentAppSession;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -36,11 +40,13 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
 
     private StaffMenuPresenter presenter;
     private RelativeLayout loadingOverlayLayout;
-    private Button addNewMovieBtn, addNewScreeningRoomBtn, addNewScreeningToRepertoireBtn, navigateToSearchBtn;
-    private ImageButton refreshBtn;
+    private Button addNewMovieBtn, addNewScreeningRoomBtn, addNewDiscountCathegory, addNewScreeningToRepertoireBtn, navigateToSearchBtn;
+    private LinearLayout refreshBtn;
     private RecyclerView currentScreeningsList;
     private RecyclerView.Adapter repertoireAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private TextView screeningsDataMissing;
 
     private LayoutInflater inflater;
     private CoordinatorLayout mainLayout;
@@ -67,9 +73,11 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
         addNewMovieBtn = findViewById(R.id.add_movie);
         refreshBtn = findViewById(R.id.refresh);
         addNewScreeningRoomBtn = findViewById(R.id.add_screening_room);
+        addNewDiscountCathegory = findViewById(R.id.add_discount_cathegory);
         addNewScreeningToRepertoireBtn = findViewById(R.id.add_screening_repertoire);
         navigateToSearchBtn = findViewById(R.id.search_repertoire);
         currentScreeningsList = findViewById(R.id.current_screenings);
+        screeningsDataMissing = findViewById(R.id.no_data_notifier);
 
         currentScreeningsList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(thisActivity);
@@ -105,6 +113,13 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
             @Override
             public void onClick(View v) {
                 presenter.showAddScreeningRoomPopupWindow(mainLayout, inflater);
+            }
+        });
+
+        addNewDiscountCathegory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.showAddDiscountCathegoryPopupWindow(mainLayout,inflater);
             }
         });
 
@@ -175,6 +190,16 @@ public class StaffMenu extends AppCompatActivity implements StaffMenuPresenter.V
     @Override
     public void navigateToSearch(){
         startActivity(new Intent(StaffMenu.this, SearchRepertoire.class));
+    }
+
+    @Override
+    public void showScreeningsDataMissing(){
+        screeningsDataMissing.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideScreeningsDataMissing(){
+        screeningsDataMissing.setVisibility(View.GONE);
     }
 
     @Override

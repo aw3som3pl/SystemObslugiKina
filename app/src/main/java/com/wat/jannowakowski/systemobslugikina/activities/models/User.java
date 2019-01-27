@@ -141,11 +141,12 @@ public class User {
 
                             for(DataSnapshot ticket : dataSnapshot.child("Tickets").getChildren()){
                                     for (DataSnapshot ticketEntry : ticket.getChildren()) {
-                                        activeTicketsList.add(new Ticket(ticketEntry.child("movieDbRef").getValue().toString(),
+                                        activeTicketsList.add(new Ticket(ticketEntry.child("ticketDbUrl").getValue().toString(),
+                                                ticketEntry.child("movieDbRef").getValue().toString(),
                                                 ticketEntry.child("movieTitle").getValue().toString(),
                                                 ticketEntry.child("movieStartDate").getValue().toString(),
                                                 ticketEntry.child("movieStartTime").getValue().toString(),
-                                                Integer.parseInt(ticketEntry.child("discountType").getValue().toString()),
+                                                ticketEntry.child("discountType").getValue().toString(),
                                                 Integer.parseInt(ticketEntry.child("movieTechnology").getValue().toString()),
                                                 ticketEntry.child("seatColumn").getValue().toString(),
                                                 ticketEntry.child("seatRow").getValue().toString(),

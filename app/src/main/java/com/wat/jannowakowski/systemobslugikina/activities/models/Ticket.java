@@ -6,11 +6,11 @@ package com.wat.jannowakowski.systemobslugikina.activities.models;
 
 public class Ticket {
 
-    public int getDiscountType() {
+    public String getDiscountType() {
         return discountType;
     }
 
-    public void setDiscountType(int discountType) {
+    public void setDiscountType(String discountType) {
         this.discountType = discountType;
     }
 
@@ -94,12 +94,19 @@ public class Ticket {
         this.movieTechnology = movieTechnology;
     }
 
+    public String getTicketDbUrl() {
+        return ticketDbUrl;
+    }
 
+    public void setTicketDbUrl(String ticketDbUrl) {
+        this.ticketDbUrl = ticketDbUrl;
+    }
 
+    private String ticketDbUrl;
     private String ticketOwner;
     private String movieTitle;
     private int movieTechnology;
-    private int discountType;
+    private String discountType;
     private String movieDbRef;
     private String seatCollumn;
     private int screeningRoomNumber;
@@ -109,9 +116,12 @@ public class Ticket {
     private String movieStartTime;
 
 
-    public Ticket(String ticketOwner, int discountType, String movieDbRef, String seatCollumn, int screeningRoomNumber, String seatRow, String ticketPrice) {
-        this.ticketOwner = ticketOwner;
+    public Ticket(String movieDbRef, String movieTitle, String movieStartDate, String movieStartTime,String discountType, int movieTechnology, String seatCollumn, String seatRow, int screeningRoomNumber, String ticketPrice) {
         this.discountType = discountType;
+        this.movieTechnology = movieTechnology;
+        this.movieTitle = movieTitle;
+        this.movieStartDate = movieStartDate;
+        this.movieStartTime = movieStartTime;
         this.movieDbRef = movieDbRef;
         this.seatCollumn = seatCollumn;
         this.screeningRoomNumber = screeningRoomNumber;
@@ -119,7 +129,8 @@ public class Ticket {
         this.ticketPrice = ticketPrice;
     }
 
-    public Ticket(String movieDbRef, String movieTitle, String movieStartDate, String movieStartTime,int discountType, int movieTechnology, String seatCollumn, String seatRow, int screeningRoomNumber, String ticketPrice) {
+    public Ticket(String ticketDbUrl, String movieDbRef, String movieTitle, String movieStartDate, String movieStartTime,String discountType, int movieTechnology, String seatCollumn, String seatRow, int screeningRoomNumber, String ticketPrice) {
+        this.ticketDbUrl = ticketDbUrl;
         this.discountType = discountType;
         this.movieTechnology = movieTechnology;
         this.movieTitle = movieTitle;

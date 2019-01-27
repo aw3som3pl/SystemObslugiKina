@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +42,8 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
 
     private RelativeLayout loadingOverlayLayout;
     private Button showUserTicketsBtn, showRepertoirBtn;
-    private ImageButton refreshBtn;
+    private LinearLayout refreshBtn;
+    private TextView screeningsDataMissing;
     private RecyclerView currentScreeningsList;
     private RecyclerView.Adapter repertoireAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -59,7 +61,7 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         showUserTicketsBtn = findViewById(R.id.active_tickets);
         showRepertoirBtn = findViewById(R.id.browse_movies);
         currentScreeningsList = findViewById(R.id.current_screenings);
-
+        screeningsDataMissing = findViewById(R.id.no_data_notifier);
         currentScreeningsList.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(thisActivity);
         currentScreeningsList.setLayoutManager(mLayoutManager);
@@ -152,6 +154,16 @@ public class CustomerMenu extends AppCompatActivity implements CustomerMenuPrese
         Intent intent = new Intent(CustomerMenu.this, BuyTickets.class);
         intent.putExtra("Screening",screening);
         startActivity(intent);
+    }
+
+    @Override
+    public void showScreeningsDataMissing(){
+        screeningsDataMissing.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideScreeningsDataMissing(){
+        screeningsDataMissing.setVisibility(View.GONE);
     }
 
 

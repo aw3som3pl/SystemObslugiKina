@@ -88,8 +88,13 @@ public class SearchRepertoirePresenter {
         setOnScreeningRoomsDataReloadedListener(new OnScreeningRoomsDataReload() {  //czekamy na załadowanie sal kinowych wyświetlanych filmów w repertuarze
             @Override
             public void OnScreeningRoomsDataReloaded(boolean state) {
-                if(state)
+                if(state) {
+                    if(screeningsInRepertoire.size()==0)
+                        view.showScreeningsDataMissing();
+                    else
+                        view.hideScreeningsDataMissing();
                     view.setScreeningsRecyclerViewAdapter(screeningsInRepertoire);
+                }
             }
         });
 
@@ -277,6 +282,11 @@ public class SearchRepertoirePresenter {
         void navigateToBuyTickets(Screening screening);
 
         void navigateToCustomerMenu();
+
+        void showScreeningsDataMissing();
+
+        void hideScreeningsDataMissing();
+
         void showLoadingIndicator();
         void hideLoadingIndicator();
         void setScreeningsRecyclerViewAdapter(ArrayList<Screening> screeningsList);
